@@ -59,6 +59,7 @@ body.lbopen{overflow:hidden}
 .menu ul[hidden]{display:none}
 .splashing .menu ul{display:none}
 .menu ul li{transform-origin:0 0}
+.menu ul li.gap{margin-top:9px}
 .menu ul.unroll li{animation:mIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*55ms)}
 .menu ul.roll li{animation:mOut .3s cubic-bezier(.5,0,.8,.4) both;animation-delay:calc((var(--n) - var(--i))*28ms)}
 @keyframes mIn{from{opacity:0;transform:translateY(-18px) scaleY(.4)}to{opacity:1;transform:none}}
@@ -171,7 +172,7 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
 /* Écran d’accueil : « Huitième Dédale » éclot lettre par lettre (graisses de Resum) puis vient se ranger dans le menu */
 .splash{position:fixed;inset:0;z-index:900;background:#000;color:#f2f2ee;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}
 .splash.out{background:rgba(0,0,0,0);transition:background .9s ease}
-.sp-word{display:flex;white-space:pre;font-family:"Resum",system-ui,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.09em;line-height:1.15;transform-origin:center;will-change:transform}
+.sp-word{display:flex;white-space:pre;font-family:"Resum",system-ui,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.09em;line-height:1.15;transform-origin:center}
 .sp-l{display:inline-block;text-align:center;padding:.4em 0;margin:-.4em 0;font-variation-settings:"wght" 6;opacity:0}
 .sp-l.go{animation:spIn .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i) * 35ms)}
 .sp-l.grow{animation:spGrow .8s cubic-bezier(.4,0,.2,1) both;animation-delay:calc(var(--i) * 30ms)}
@@ -483,12 +484,13 @@ feed.innerHTML = projects.map((p,i)=>
      <span class="cap">${p.image ? p.title : "Projet n°"+(i+1)}</span></button>`).join("");
 
 /* Ordre du menu (À propos s’affiche en premier) */
-const cats = ["Identité","Affiche","Sérigraphie","Risographie","Typographie","Édition","Expérimentations","Exposition","Tools"];
+const cats = ["Sérigraphie","Risographie","Identité","Affiche","Typographie","Édition","Expérimentations","Exposition","Tools"];
+const gapBefore = ["Identité","Exposition"];   /* petits espaces entre les groupes (À propos | techniques | disciplines | liens) */
 let curFilter = "Tous";
 function buildMenu(){
   list.innerHTML =
     `<li><button class="lbl" id="about-btn" type="button">${L_("À propos")}</button></li>` +
-    cats.map(c=>`<li><button class="lbl${c===curFilter?" on":""}" data-f="${c}" type="button">${clabel(c)}</button></li>`).join("");
+    cats.map(c=>`<li${c==="Sérigraphie"||gapBefore.includes(c)?' class="gap"':""}><button class="lbl${c===curFilter?" on":""}" data-f="${c}" type="button">${clabel(c)}</button></li>`).join("");
 }
 buildMenu();
 
@@ -578,8 +580,10 @@ render();
   document.documentElement.classList.add("splashing");
   const chars = [...name.textContent.trim()];
   let finished = false;
-  const finish = () => { if(finished) return; finished = true; document.documentElement.classList.remove("splashing"); sp.remove(); };
-  sp.addEventListener("click", finish);
+  const finish = (soft) => { if(finished) return; finished = true; document.documentElement.classList.remove("splashing");
+    /* fondu enchaîné : le vrai titre du menu apparaît pendant que la copie animée s’efface, sans saut visible */
+    if(soft===true){ word.style.transition = "opacity .16s linear"; word.style.opacity = 0; setTimeout(()=>sp.remove(), 200); } else sp.remove(); };
+  sp.addEventListener("click", ()=>finish());
   const fontsReady = Promise.race([ (document.fonts && document.fonts.load) ? document.fonts.load('400 40px Resum').catch(()=>{}) : Promise.resolve(), new Promise(r=>setTimeout(r,1500)) ]);
   fontsReady.then(()=>{
     if(finished) return;
@@ -613,11 +617,11 @@ render();
         word.style.transition = `transform .9s ${ease}`;
         word.style.transform = `translate(${tx}px,${ty}px) scale(${k})`;
         sp.classList.add("out");
-        setTimeout(finish, 960);
+        setTimeout(()=>finish(true), 940);
       }, growEnd + 250);
     });
   });
-  setTimeout(finish, 7000);   /* sécurité */
+  setTimeout(()=>finish(), 7000);   /* sécurité */
 })();
 </script>
 </body>
