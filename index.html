@@ -57,6 +57,12 @@ body.lbopen{overflow:hidden}
 .menu{position:fixed;z-index:10;top:calc(env(safe-area-inset-top,0px) + 14px);left:14px;max-width:calc(100vw - 28px)}
 .menu ul{list-style:none;display:flex;flex-direction:column;align-items:flex-start;gap:5px;margin-top:5px}
 .menu ul[hidden]{display:none}
+.splashing .menu ul{display:none}
+.menu ul li{transform-origin:0 0}
+.menu ul.unroll li{animation:mIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*55ms)}
+.menu ul.roll li{animation:mOut .3s cubic-bezier(.5,0,.8,.4) both;animation-delay:calc((var(--n) - var(--i))*28ms)}
+@keyframes mIn{from{opacity:0;transform:translateY(-18px) scaleY(.4)}to{opacity:1;transform:none}}
+@keyframes mOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-18px) scaleY(.4)}}
 .row{display:flex;gap:5px;align-items:stretch}
 .lbl{font:inherit;font-weight:400;font-size:clamp(.72rem,1.2vw,1rem);letter-spacing:.09em;text-transform:uppercase;background:var(--box);color:var(--boxink);border:0;padding:8px 14px;cursor:pointer;text-align:left}
 .lbl:hover,.toggle:hover{background:var(--boxink);color:var(--box)}
@@ -152,7 +158,7 @@ body.proj #prev,body.proj #next{display:grid}
 .btn{align-self:flex-start;margin-top:auto;display:inline-block;background:var(--box);color:var(--boxink)!important;padding:10px 16px;text-decoration:none!important;text-transform:uppercase;letter-spacing:.09em}
 .textpage{padding:110px 24px 60px}
 @media (min-width:900px){.textpage{padding:60px 60px 80px 420px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.menu ul li{animation:none!important}}
 /* Titres, menu, boutons et étiquettes de cases : Resum Bold A (axe wght = 6). En dernier pour passer après les « font:inherit » */
 button{font-family:inherit}
 h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
@@ -293,7 +299,22 @@ const feed = document.getElementById("feed"), list = document.getElementById("li
 const page = document.getElementById("page");
 const LOREM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 let curIdx = null, wasAbout = false;
-function setMenu(o){ toggle.setAttribute("aria-expanded", o); list.hidden = !o; }
+let menuT = 0;
+function playUnroll(){
+  const lis = [...list.children]; lis.forEach((li,i)=>li.style.setProperty("--i", i)); list.style.setProperty("--n", lis.length);
+  list.classList.remove("roll","unroll"); void list.offsetWidth; list.classList.add("unroll");
+  }
+list.addEventListener("animationend", e=>{ if(e.animationName==="mIn" && e.target===list.lastElementChild) list.classList.remove("unroll"); });
+function setMenu(o){
+  o = !!o;
+  const was = toggle.getAttribute("aria-expanded")==="true";
+  toggle.setAttribute("aria-expanded", o);
+  clearTimeout(menuT);
+  const lis = [...list.children]; lis.forEach((li,i)=>li.style.setProperty("--i", i)); list.style.setProperty("--n", lis.length);
+  if(o){ list.hidden = false; if(!was) playUnroll(); }
+  else if(was && !list.hidden){ list.classList.remove("unroll"); list.classList.add("roll"); menuT = setTimeout(()=>{ list.hidden = true; list.classList.remove("roll"); }, 300 + lis.length*28); }
+  else { list.hidden = true; }
+}
 
 /* Navigation : #p-N = page projet, #apropos = à propos, sinon le feed */
 function render(){
@@ -487,10 +508,7 @@ list.addEventListener("click", e=>{
 document.getElementById("name").onclick = ()=>filter("Tous");
 
 const toggle = document.getElementById("toggle");
-toggle.onclick = ()=>{
-  const open = toggle.getAttribute("aria-expanded")==="true";
-  toggle.setAttribute("aria-expanded", !open); list.hidden = open;
-};
+toggle.onclick = ()=>{ setMenu(toggle.getAttribute("aria-expanded")!=="true"); };
 /* le menu reste déroulé à l’ouverture, y compris sur téléphone */
 
 /* Zoom : la case s’agrandit jusqu’à remplir l’écran, puis la page du projet apparaît */
@@ -549,6 +567,7 @@ langBtn.onclick = ()=>{
   applyLang(true);
 };
 applyLang(false);
+playUnroll();   /* à l’ouverture du site (après l’écran d’accueil) le menu se déroule */
 render();
 
 /* ===== Écran d’accueil : la typo apparaît fine, grossit (graisses de Resum), puis va se ranger dans le menu ===== */
