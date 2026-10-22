@@ -7,7 +7,7 @@
 <meta name="description" content="Portfolio de Huitième Dédale, graphiste : identités, affiches, web, éditions et expérimentations.">
 <style>
 @font-face{font-family:"Resum";src:url("media/Resum.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
-:root{--g:4px;--bg:#f2f2ee;--ink:#111;--box:#111;--boxink:#f2f2ee;--light:#e7e7e1;--cols:8}
+:root{--g:6px;--bg:#f2f2ee;--ink:#111;--box:#111;--boxink:#f2f2ee;--light:#e7e7e1;--cols:8}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161616;--ink:#f2f2ee;--light:#2a2a28}}
 :root[data-theme="dark"]{--bg:#161616;--ink:#f2f2ee;--light:#2a2a28}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -37,7 +37,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Resum",system-ui,-apple-
 .t:hover .cap,.t:focus-visible .cap{opacity:1}
 @media (hover:none){.t .cap{opacity:1}}
 @media (max-width:1000px){:root{--cols:6}}
-@media (max-width:640px){:root{--cols:4;--g:3px}}
+@media (max-width:640px){:root{--cols:4;--g:4px}}
 /* Sur mobile/tablette la grille a moins de 8 colonnes : les colonnes imposées sont ignorées (sinon des colonnes implicites cachent des projets) */
 @media (max-width:1000px){.t{grid-column:auto / span var(--w)!important;order:var(--mo,0)}}
 /* Téléphone : pas de nom de projet sur les cases de la page principale */
