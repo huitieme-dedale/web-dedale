@@ -44,6 +44,14 @@ body{background:var(--bg);color:var(--ink);font-family:"Resum",system-ui,-apple-
 @media (max-width:640px){.t .cap{display:none!important}}
 /* Téléphone : les pages des défilements tiennent dans la largeur de l’écran (plus rognées) */
 @media (max-width:700px){.ed .ed-strip img,.ed.land .ed-strip img{width:calc(100vw - 36px)!important;height:auto!important;max-width:none}}
+/* Image agrandie : toucher pour ouvrir / refermer, pincer pour zoomer */
+.lb{position:fixed;inset:0;z-index:600;background:rgba(10,10,10,.96);display:flex;align-items:center;justify-content:center;touch-action:none;opacity:0;transition:opacity .25s ease;overscroll-behavior:contain}
+.lb[hidden]{display:none}
+.lb.on{opacity:1}
+.lb img{max-width:100vw;max-height:100vh;max-height:100dvh;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;transform-origin:center;will-change:transform;pointer-events:none}
+body.lbopen{overflow:hidden}
+.blocks img,.ed-strip img,.ed-row img,.mock,.frames img,.g,.hero.fit img,.pair img{cursor:zoom-in}
+
 
 /* Menu flottant */
 .menu{position:fixed;z-index:10;top:calc(env(safe-area-inset-top,0px) + 14px);left:14px;max-width:calc(100vw - 28px)}
@@ -298,6 +306,69 @@ function showProject(i){
     ${(p.gallery||[]).map(g=>`<img class="g" src="${g}" alt="Visuel du projet ${p.title}" loading="lazy">`).join("")}
     <div class="pnext"><button class="lbl" data-go="p-${n}" type="button">Projet suivant</button></div>`);
 }
+/* ===== Image agrandie : un toucher ouvre, un toucher ferme ; pincer (ou molette) pour zoomer, glisser pour déplacer ===== */
+const ZSEL = ".blocks img,.ed-strip img,.ed-row img,.mock,.frames img,.g,.hero.fit img,.pair img";
+(function(){
+  const lb = document.createElement("div"), im = document.createElement("img");
+  lb.className = "lb"; lb.hidden = true; lb.setAttribute("role","dialog"); lb.setAttribute("aria-modal","true"); lb.setAttribute("aria-label","Image agrandie. Touchez pour fermer, pincez pour zoomer.");
+  im.alt = ""; lb.appendChild(im); document.body.appendChild(lb);
+  let s = 1, tx = 0, ty = 0, open = false, closeT;
+  const pts = new Map(); let moved = false, multi = false, t0 = 0, sx = 0, sy = 0, p0 = {tx:0,ty:0}, d0 = 1, s0 = 1, m0 = {x:0,y:0};
+  const cx = () => innerWidth/2, cy = () => innerHeight/2;
+  const apply = () => {
+    if(s <= 1){ s = 1; tx = ty = 0; }
+    else {
+      const mx = Math.max(0,(im.offsetWidth*s - innerWidth)/2), my = Math.max(0,(im.offsetHeight*s - innerHeight)/2);
+      tx = Math.max(-mx,Math.min(mx,tx)); ty = Math.max(-my,Math.min(my,ty));
+    }
+    im.style.transform = `translate(${tx}px,${ty}px) scale(${s})`;
+  };
+  const zoomAt = (ns, px, py, ox, oy, otx, oty, os) => {   /* garde fixe le point (ox,oy) de l’image sous (px,py) */
+    ns = Math.max(1,Math.min(6,ns));
+    tx = px - cx() - ((ox - cx() - otx)/os)*ns; ty = py - cy() - ((oy - cy() - oty)/os)*ns; s = ns; apply();
+  };
+  const show = src => {
+    clearTimeout(closeT); im.src = src; s = 1; tx = ty = 0; apply();
+    lb.hidden = false; open = true; document.body.classList.add("lbopen");
+    requestAnimationFrame(()=>lb.classList.add("on")); lb.focus && lb.setAttribute("tabindex","-1");
+  };
+  const hide = () => {
+    if(!open) return; open = false; lb.classList.remove("on"); document.body.classList.remove("lbopen"); pts.clear();
+    closeT = setTimeout(()=>{ lb.hidden = true; im.removeAttribute("src"); }, 260);
+  };
+  page.addEventListener("click", e=>{
+    const t = e.target.closest(ZSEL); if(!t || t.closest("a,button")) return;
+    show(t.currentSrc || t.src);
+  });
+  lb.addEventListener("pointerdown", e=>{
+    try{ lb.setPointerCapture(e.pointerId); }catch(_){} pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(pts.size === 1){ moved = false; multi = false; t0 = Date.now(); sx = e.clientX; sy = e.clientY; p0 = {tx,ty}; }
+    else if(pts.size === 2){
+      multi = true; const [a,b] = [...pts.values()];
+      d0 = Math.hypot(a.x-b.x,a.y-b.y) || 1; s0 = s; m0 = {x:(a.x+b.x)/2,y:(a.y+b.y)/2}; p0 = {tx,ty};
+    }
+  });
+  lb.addEventListener("pointermove", e=>{
+    if(!pts.has(e.pointerId)) return; pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(pts.size === 2){
+      const [a,b] = [...pts.values()], d = Math.hypot(a.x-b.x,a.y-b.y), m = {x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+      zoomAt(s0*d/d0, m.x, m.y, m0.x, m0.y, p0.tx, p0.ty, s0); moved = true;
+    } else if(pts.size === 1){
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if(Math.hypot(dx,dy) > 8) moved = true;
+      if(s > 1 && moved){ tx = p0.tx + dx; ty = p0.ty + dy; apply(); }
+    }
+  });
+  const up = e=>{
+    if(!pts.has(e.pointerId)) return; pts.delete(e.pointerId);
+    if(pts.size === 0){ if(!moved && !multi && Date.now()-t0 < 600) hide(); else if(s < 1.02){ s = 1; apply(); } }
+    else if(pts.size === 1){ const r = [...pts.values()][0]; sx = r.x; sy = r.y; p0 = {tx,ty}; moved = true; }
+  };
+  lb.addEventListener("pointerup", up); lb.addEventListener("pointercancel", e=>{ pts.delete(e.pointerId); });
+  lb.addEventListener("wheel", e=>{ e.preventDefault(); zoomAt(s*(e.deltaY<0?1.2:1/1.2), e.clientX, e.clientY, e.clientX, e.clientY, tx, ty, s); }, {passive:false});
+  addEventListener("keydown", e=>{ if(open && e.key === "Escape") hide(); });
+  addEventListener("hashchange", hide);
+})();
 page.addEventListener("click", e=>{ const b = e.target.closest("[data-go],[data-f]"); if(!b) return; if(b.dataset.go) go(b.dataset.go); else cat(b.dataset.f); });
 
 const vis = p => p.image ? `<img src="${p.image}" alt="Visuel du projet ${p.title}" loading="lazy">` : "";
@@ -360,7 +431,7 @@ document.getElementById("next").onclick = ()=>step(1);
 /* Curseur rond noir */
 const cur = document.getElementById("cursor");
 if(matchMedia("(hover:hover) and (pointer:fine)").matches){
-  addEventListener("mousemove", e=>{ cur.style.translate=e.clientX+"px "+e.clientY+"px"; cur.classList.add("show"); cur.classList.toggle("big", !!location.hash.slice(1) && !!e.target.closest("a,button,.t")); });
+  addEventListener("mousemove", e=>{ cur.style.translate=e.clientX+"px "+e.clientY+"px"; cur.classList.add("show"); cur.classList.toggle("big", !!location.hash.slice(1) && !!e.target.closest("a,button,.t,.lb")); });
   addEventListener("hashchange", ()=>cur.classList.remove("big"));
   document.addEventListener("mouseleave", ()=>cur.classList.remove("show"));
 }
