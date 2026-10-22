@@ -125,6 +125,9 @@ body.proj.lightproj .lbl,body.proj.lightproj .toggle,body.proj.lightproj .btn{bo
 /* Page projet (fond sombre) */
 body.proj{--bg:#0d0d0d;--ink:#f2f2ee}
 body.proj .lbl,body.proj .toggle,body.proj .btn{box-shadow:0 0 0 3px #f2f2ee}
+/* Page principale : fond noir */
+body:not(.proj):not(.aboutpg){--bg:#000;--ink:#f2f2ee}
+body:not(.proj):not(.aboutpg) .lbl,body:not(.proj):not(.aboutpg) .toggle{box-shadow:0 0 0 3px #f2f2ee}
 .phead{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:150px 36px 70px}
 .phead h1{font-weight:400;font-size:clamp(2rem,4.5vw,4.2rem);text-transform:uppercase;letter-spacing:.02em;line-height:1}
 .tags{margin-top:22px}
@@ -214,7 +217,7 @@ const projects = [
   {title:"Mathison Turing", col:5, colBy:{"Affiche":8,"Sérigraphie":4}, cat:"Affiche", cats:["Affiche","Sérigraphie"], year:2026, w:1,h:1, image:"media/tur-tile.jpg", link:"", bg:"#e6f21a", text:"Affiches sérigraphiées en noir sur papier fluo jaune et vert.", desc:"Affiches sérigraphiées en noir sur papier fluo jaune et vert.", blocks:[{"img":"media/tur-jaune.jpg","w":1400,"h":1980,"fit":"56%","alt":"Affiche Alan Mathison Turing, version jaune fluo"},{"img":"media/tur-vert.jpg","w":1400,"h":1980,"fit":"56%","alt":"Affiche Alan Mathison Turing, version verte fluo"}]},
   {title:"Extreme Specimen Grunge", col:3, colBy:{"Affiche":1,"Sérigraphie":1}, cat:"Affiche", cats:["Affiche","Sérigraphie"], colBy:{"Sérigraphie":1,"Affiche":1}, year:2026, w:2,h:2, image:"media/egs-tile.jpg", link:"", bg:"#0d0d0d", text:"Affiche sérigraphiée en argent sur noir au format A2. Il s’agit d’un collage architectural cathartique.", desc:"Affiche sérigraphiée en argent sur noir au format A2. Il s’agit d’un collage architectural cathartique.", blocks:[{"img":"media/egs-affiche.jpg","w":1400,"h":1980,"fit":"56%","alt":"Affiche Extreme Specimen Grunge, version noir et blanc"},{"img":"media/egs-mockup.jpg","w":1800,"h":1013,"fit":"56%","alt":"Affiche sérigraphiée en argent sur papier noir"},{"imgs":["media/egs-v1.jpg","media/egs-v2.jpg","media/egs-v3.jpg"],"w":900,"h":1322,"alt":"Variante colorée de l’affiche Extreme Specimen Grunge"}]},
   {title:"Swiss Posters", col:5, colBy:{"Affiche":4}, cat:"Affiche", year:2025, w:1,h:1, image:"media/sw-tile.jpg", link:"", bg:"#e9e6df", text:"Affiche en hommage aux grands noms du graphisme suisse qui ont été source d’inspiration.", desc:"Affiche en hommage aux grands noms du graphisme suisse qui ont été source d’inspiration.", blocks:[{"img":"media/sw-affiche.jpg","w":1400,"h":1979,"fit":"56%","alt":"Affiche Swiss Posters"},{"img":"media/sw-mockup.jpg","w":1800,"h":1249,"fit":"78%","alt":"Mockup de l’affiche Swiss Posters, versions noire et blanche, collées sur un mur"}]},
-  {title:"Affiche Boom", col:6, colBy:{"Affiche":6,"Sérigraphie":3}, cat:"Affiche", cats:["Affiche","Sérigraphie"], year:2026, w:1,h:1, image:"media/boom-tile.jpg", link:"", bg:"#fafafa", text:"Série de 4 affiches imprimées en sérigraphie. Thème sur le décalage entre la gravité du sujet et la palette chromatique.", desc:"Série de 4 affiches imprimées en sérigraphie. Thème sur le décalage entre la gravité du sujet et la palette chromatique.", blocks:[{"video":"media/boom-video.mp4","poster":"media/boom-poster.jpg","w":900,"h":1272,"fit":"48%","alt":"Animation des affiches Boom"},{"imgs":["media/boom-1.jpg","media/boom-2.jpg"],"w":1000,"h":1414,"rowfit":"64%","alt":"Affiche Boom"},{"imgs":["media/boom-3.jpg","media/boom-4.jpg"],"w":1000,"h":1414,"rowfit":"64%","alt":"Affiche Boom"}]},
+  {title:"Affiche Boom", col:6, colBy:{"Affiche":6,"Sérigraphie":3}, cat:"Affiche", cats:["Affiche","Sérigraphie"], year:2026, w:1,h:1, image:"media/boom-tile2.jpg", link:"", bg:"#fafafa", text:"Série de 4 affiches imprimées en sérigraphie. Thème sur le décalage entre la gravité du sujet et la palette chromatique.", desc:"Série de 4 affiches imprimées en sérigraphie. Thème sur le décalage entre la gravité du sujet et la palette chromatique.", blocks:[{"video":"media/boom-video.mp4","poster":"media/boom-poster.jpg","w":900,"h":1272,"fit":"48%","alt":"Animation des affiches Boom"},{"imgs":["media/boom-1.jpg","media/boom-2.jpg"],"w":1000,"h":1414,"rowfit":"64%","alt":"Affiche Boom"},{"imgs":["media/boom-3.jpg","media/boom-4.jpg"],"w":1000,"h":1414,"rowfit":"64%","alt":"Affiche Boom"}]},
   {title:"Brutalist Type", col:7, colBy:{"Typographie":1}, cat:"Typographie", colBy:{"Typographie":1}, year:2025, w:1,h:1, image:"media/brutalist-tile.jpg", link:"", bg:"#0d0d0d", text:"Réalisation d’un alphabet à partir d’éléments tirés du réel. La construction des glyphes s’est orientée autour du thème du brutalisme. Chaque glyphe fonctionne avec l’espace négatif produit par la silhouette des structures.", desc:"Réalisation d’un alphabet à partir d’éléments tirés du réel. La construction des glyphes s’est orientée autour du thème du brutalisme. Chaque glyphe fonctionne avec l’espace négatif produit par la silhouette des structures.", blocks:[{"video": "media/brutalist-video-sq.mp4", "poster": "media/brutalist-poster-sq.jpg", "w": 1000, "h": 1000, "fit": "min(62%,88vh)", "alt": "Animation de l’alphabet Brutalist Type"}, {"img": "media/brutalist-alphabet.jpg", "w": 1100, "h": 2186, "fit": "44%", "alt": "L’alphabet complet de Brutalist Type, une lettre par photographie d’architecture brutaliste"}, {"img": "media/brutalist-texte.jpg", "w": 1800, "h": 1277, "alt": "Planche typographique Brutalist Type avec textes et croquis"}, {"img": "media/brutalist-mockup.jpg", "w": 1400, "h": 800, "alt": "Mockup de l’affiche Brutalism will never die"}]},
   {title:"Dedale Stickers", col:8, colBy:{"Sérigraphie":3}, cat:"Sérigraphie", year:2026, w:1,h:1, image:"media/ded-tile.jpg", link:"", bg:"#ffd400", text:"Stickers sérigraphiés sur papier vinyle jaune.", desc:"Stickers sérigraphiés sur papier vinyle jaune.", blocks:[{"img":"media/ded-affiche.jpg","w":947,"h":1339,"fit":"50%","alt":"Planche jaune Dedale"},{"video":"media/ded-video.mp4","poster":"media/ded-poster.jpg","w":810,"h":1080,"fit":"50%","alt":"Animation des stickers Dedale"},{"imgs":["media/ded-m1.jpg","media/ded-m2.jpg"],"w":900,"h":1200,"rowfit":"50%","alt":"Mockup des stickers Dedale"}]},
   {title:"Danger Riso", col:3, colBy:{"Affiche":4,"Risographie":3}, cat:"Affiche", cats:["Affiche","Risographie"], year:2026, w:1,h:1, image:"media/danger-tile.jpg", link:"", bg:"#f3ead2", text:"Affiches imprimées en riso en bleu et orange fluo. Rappel sur l’importance de vider le bac à master et mise en garde du processus.", desc:"Affiches imprimées en riso en bleu et orange fluo. Rappel sur l’importance de vider le bac à master et mise en garde du processus.", blocks:[{"img":"media/danger-scan.jpg","w":1400,"h":1980,"fit":"56%","alt":"Scan de l’affiche Danger Riso"},{"video":"media/danger-video.mp4","poster":"media/danger-poster.jpg","w":900,"h":1200,"fit":"56%","alt":"Animation de l’affiche Danger Riso"},{"img":"media/danger-mockup.jpg","w":1400,"h":1867,"fit":"56%","alt":"Mockup de l’affiche Danger Riso posée sur une grille métallique"},{"img":"media/danger-master.jpg","w":1400,"h":1980,"fit":"56%","alt":"Master noir et blanc de l’affiche Danger Riso"}]},
@@ -312,7 +315,7 @@ const ZSEL = ".blocks img,.ed-strip img,.ed-row img,.mock,.frames img,.g,.hero.f
   const lb = document.createElement("div"), im = document.createElement("img");
   lb.className = "lb"; lb.hidden = true; lb.setAttribute("role","dialog"); lb.setAttribute("aria-modal","true"); lb.setAttribute("aria-label","Image agrandie. Touchez pour fermer, pincez pour zoomer.");
   im.alt = ""; lb.appendChild(im); document.body.appendChild(lb);
-  let s = 1, tx = 0, ty = 0, open = false, closeT;
+  let s = 1, tx = 0, ty = 0, open = false, closeT, dragX = 0, dragY = 0;
   const pts = new Map(); let moved = false, multi = false, t0 = 0, sx = 0, sy = 0, p0 = {tx:0,ty:0}, d0 = 1, s0 = 1, m0 = {x:0,y:0};
   const cx = () => innerWidth/2, cy = () => innerHeight/2;
   const apply = () => {
@@ -328,23 +331,23 @@ const ZSEL = ".blocks img,.ed-strip img,.ed-row img,.mock,.frames img,.g,.hero.f
     tx = px - cx() - ((ox - cx() - otx)/os)*ns; ty = py - cy() - ((oy - cy() - oty)/os)*ns; s = ns; apply();
   };
   const show = src => {
-    clearTimeout(closeT); im.src = src; s = 1; tx = ty = 0; apply();
+    clearTimeout(closeT); im.src = src; s = 1; tx = ty = 0; dragX = dragY = 0; im.style.transition = "none"; lb.style.background = ""; apply();
     lb.hidden = false; open = true; document.body.classList.add("lbopen");
     requestAnimationFrame(()=>lb.classList.add("on")); lb.focus && lb.setAttribute("tabindex","-1");
   };
   const hide = () => {
     if(!open) return; open = false; lb.classList.remove("on"); document.body.classList.remove("lbopen"); pts.clear();
-    closeT = setTimeout(()=>{ lb.hidden = true; im.removeAttribute("src"); }, 260);
+    closeT = setTimeout(()=>{ lb.hidden = true; im.removeAttribute("src"); lb.style.background = ""; im.style.transition = "none"; }, 260);
   };
   page.addEventListener("click", e=>{
     const t = e.target.closest(ZSEL); if(!t || t.closest("a,button")) return;
     show(t.currentSrc || t.src);
   });
   lb.addEventListener("pointerdown", e=>{
-    try{ lb.setPointerCapture(e.pointerId); }catch(_){} pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    im.style.transition = "none"; try{ lb.setPointerCapture(e.pointerId); }catch(_){} pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
     if(pts.size === 1){ moved = false; multi = false; t0 = Date.now(); sx = e.clientX; sy = e.clientY; p0 = {tx,ty}; }
     else if(pts.size === 2){
-      multi = true; const [a,b] = [...pts.values()];
+      multi = true; dragX = dragY = 0; lb.style.background = ""; apply(); const [a,b] = [...pts.values()];
       d0 = Math.hypot(a.x-b.x,a.y-b.y) || 1; s0 = s; m0 = {x:(a.x+b.x)/2,y:(a.y+b.y)/2}; p0 = {tx,ty};
     }
   });
@@ -357,11 +360,27 @@ const ZSEL = ".blocks img,.ed-strip img,.ed-row img,.mock,.frames img,.g,.hero.f
       const dx = e.clientX - sx, dy = e.clientY - sy;
       if(Math.hypot(dx,dy) > 8) moved = true;
       if(s > 1 && moved){ tx = p0.tx + dx; ty = p0.ty + dy; apply(); }
+      else if(s <= 1 && moved){   /* image entière : elle suit le doigt, on la glisse sur un côté pour fermer */
+        dragX = dx; dragY = dy; im.style.transition = "none";
+        im.style.transform = `translate(${dx}px,${dy}px)`;
+        lb.style.background = `rgba(10,10,10,${(.96*(1 - Math.min(1, Math.hypot(dx,dy)/(innerWidth*.8)))).toFixed(3)})`;
+      }
     }
   });
   const up = e=>{
     if(!pts.has(e.pointerId)) return; pts.delete(e.pointerId);
-    if(pts.size === 0){ if(!moved && !multi && Date.now()-t0 < 600) hide(); else if(s < 1.02){ s = 1; apply(); } }
+    if(pts.size === 0){
+      if(!moved && !multi && Date.now()-t0 < 600) hide();
+      else if(!multi && s <= 1 && (dragX || dragY)){
+        const fast = Math.abs(dragX)/(Date.now()-t0+1) > .5;
+        if(Math.abs(dragX) > innerWidth*.22 || Math.abs(dragY) > innerHeight*.18 || (fast && Math.abs(dragX) > 60)){
+          const ex = Math.abs(dragX) >= Math.abs(dragY) ? Math.sign(dragX||1)*innerWidth*1.1 : 0, ey = ex ? dragY : Math.sign(dragY||1)*innerHeight*1.1;
+          im.style.transition = "transform .22s ease"; im.style.transform = `translate(${ex}px,${ey}px)`; lb.style.background = "transparent"; hide();
+        } else { im.style.transition = "transform .2s ease"; apply(); lb.style.background = ""; }
+        dragX = dragY = 0;
+      }
+      else if(s < 1.02){ s = 1; apply(); }
+    }
     else if(pts.size === 1){ const r = [...pts.values()][0]; sx = r.x; sy = r.y; p0 = {tx,ty}; moved = true; }
   };
   lb.addEventListener("pointerup", up); lb.addEventListener("pointercancel", e=>{ pts.delete(e.pointerId); });
