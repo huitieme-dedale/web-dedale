@@ -166,14 +166,11 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
 .splash{position:fixed;inset:0;z-index:900;background:#000;color:#f2f2ee;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}
 .splash.out{background:rgba(0,0,0,0);transition:background .9s ease}
 .sp-word{display:flex;white-space:pre;font-family:"Resum",system-ui,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.09em;line-height:1.15;transform-origin:center;will-change:transform}
-.sp-l{display:inline-block;text-align:center;font-variation-settings:"wght" 6;opacity:0;will-change:transform,opacity,filter}
-.sp-l.go{animation:spBloom 1s cubic-bezier(.25,.7,.2,1) both;animation-delay:calc(var(--i) * 48ms)}
-@keyframes spBloom{
-  0%{opacity:0;transform:scale(.15);font-variation-settings:"wght" var(--lo);filter:blur(12px)}
-  40%{opacity:1;transform:scale(1.28);font-variation-settings:"wght" var(--pk);filter:blur(0)}
-  68%{transform:scale(.95);font-variation-settings:"wght" var(--mid)}
-  100%{opacity:1;transform:scale(1);font-variation-settings:"wght" 6;filter:blur(0)}
-}
+.sp-l{display:inline-block;text-align:center;padding:.4em 0;margin:-.4em 0;font-variation-settings:"wght" 6;opacity:0}
+.sp-l.go{animation:spIn .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i) * 35ms)}
+.sp-l.grow{animation:spGrow .8s cubic-bezier(.3,.7,.2,1) both;animation-delay:calc(var(--i) * 30ms)}
+@keyframes spIn{0%{opacity:0;transform:scale(.92);font-variation-settings:"wght" 0}100%{opacity:1;transform:scale(1);font-variation-settings:"wght" 0}}
+@keyframes spGrow{0%{opacity:1;transform:scale(1);font-variation-settings:"wght" 0}60%{transform:scale(1.07);font-variation-settings:"wght" var(--pk)}100%{opacity:1;transform:scale(1);font-variation-settings:"wght" var(--pk)}}
 html.splashing,html.splashing body{overflow:hidden}
 html.splashing #name{color:transparent!important}
 </style>
@@ -554,40 +551,51 @@ langBtn.onclick = ()=>{
 applyLang(false);
 render();
 
-/* ===== Écran d’accueil ===== */
+/* ===== Écran d’accueil : la typo apparaît fine, grossit (graisses de Resum), puis va se ranger dans le menu ===== */
 (function(){
   const sp = document.getElementById("splash"), word = document.getElementById("spWord"), name = document.getElementById("name");
   if(!sp) return;
   if((location.hash||"").length > 1 || matchMedia("(prefers-reduced-motion:reduce)").matches){ sp.remove(); return; }
   document.documentElement.classList.add("splashing");
-  const txt = name.textContent.trim(), chars = [...txt];
+  const chars = [...name.textContent.trim()];
   let finished = false;
   const finish = () => { if(finished) return; finished = true; document.documentElement.classList.remove("splashing"); sp.remove(); };
   sp.addEventListener("click", finish);
   const fontsReady = Promise.race([ (document.fonts && document.fonts.load) ? document.fonts.load('400 40px Resum').catch(()=>{}) : Promise.resolve(), new Promise(r=>setTimeout(r,1500)) ]);
   fontsReady.then(()=>{
     if(finished) return;
-    const peaks = [8,6,9,7,9,5,8,9,6,8,7,9,6,8,9];
-    word.innerHTML = chars.map((c,i)=>`<span class="sp-l" style="--i:${i};--lo:${i%3};--pk:${peaks[i%peaks.length]};--mid:${2+(i%4)}">${c}</span>`).join("");
-    const ls = [...word.children];
-    /* taille : la ligne occupe environ 86 % de la largeur */
-    word.style.fontSize = "100px"; ls.forEach(l=>l.style.width = "");
-    const w100 = word.getBoundingClientRect().width || 1;
-    const fs = Math.min(100*Math.min(innerWidth*.86, 1300)/w100, 200);
+    const base = [9,8,9,7,9,8,9,9,7,9,8,9,7,9,9], n = chars.length;
+    /* lettres accentuées : graisse plafonnée à 6, au-delà l’accent se fond dans la lettre */
+    const peaks = chars.map((c,i)=> /[^\u0000-\u007F]/.test(c) ? 6 : base[i%base.length]);
+    word.innerHTML = chars.map((c,i)=>`<span class="sp-l" style="--i:${i};--pk:${peaks[i]}">${c}</span>`).join("");
+    const ls = [...word.children], pk = i => peaks[i];
+    const measure = (wg) => ls.map((l,i)=>{ l.style.width = ""; l.style.fontVariationSettings = `"wght" ${wg(i)}`; return l.getBoundingClientRect().width; });
+    /* taille : la ligne, au plus épais, occupe environ 86 % de la largeur */
+    word.style.fontSize = "100px";
+    const t100 = measure(pk).reduce((a,b)=>a+b,0) || 1;
+    const fs = Math.min(100*Math.min(innerWidth*.86, 1300)/t100, 200);
     word.style.fontSize = fs+"px";
-    ls.forEach(l=>{ l.style.width = l.getBoundingClientRect().width+"px"; });   /* largeur figée : la graisse change sans décaler la ligne */
+    const wHeavy = measure(pk), wFinal = measure(()=>6);
+    ls.forEach((l,i)=>{ l.style.fontVariationSettings = ""; l.style.width = wHeavy[i]+"px"; });   /* largeurs figées : la graisse change sans décaler la ligne */
     requestAnimationFrame(()=>{
       ls.forEach(l=>l.classList.add("go"));
-      const bloomEnd = (ls.length-1)*48 + 1000;
+      setTimeout(()=>{ if(!finished) ls.forEach(l=>{ l.classList.remove("go"); l.classList.add("grow"); }); }, 700);
+      const growEnd = 700 + (n-1)*30 + 800;
       setTimeout(()=>{
         if(finished) return;
+        /* on fige l’état épais, puis graisse et largeurs reviennent à celles du menu pendant le vol */
+        ls.forEach((l,i)=>{ l.classList.remove("grow"); l.style.opacity = 1; l.style.fontVariationSettings = `"wght" ${pk(i)}`; });
+        void word.offsetWidth;
+        const ease = "cubic-bezier(.7,0,.2,1)";
+        ls.forEach((l,i)=>{ l.style.transition = `font-variation-settings .9s ${ease}, width .9s ${ease}`; l.style.fontVariationSettings = '"wght" 6'; l.style.width = wFinal[i]+"px"; });
         const r = document.createRange(); r.selectNodeContents(name); const t = r.getBoundingClientRect(), c = word.getBoundingClientRect();
-        const k = t.width / c.width, tx = (t.left+t.width/2) - (c.left+c.width/2), ty = (t.top+t.height/2) - (c.top+c.height/2);
-        word.style.transition = "transform .9s cubic-bezier(.7,0,.2,1)";
+        const total = wFinal.reduce((a,b)=>a+b,0);
+        const k = t.width / total, tx = (t.left+t.width/2) - (c.left+c.width/2), ty = (t.top+t.height/2) - (c.top+c.height/2);
+        word.style.transition = `transform .9s ${ease}`;
         word.style.transform = `translate(${tx}px,${ty}px) scale(${k})`;
         sp.classList.add("out");
         setTimeout(finish, 960);
-      }, bloomEnd + 350);
+      }, growEnd + 250);
     });
   });
   setTimeout(finish, 7000);   /* sécurité */
