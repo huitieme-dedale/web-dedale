@@ -522,7 +522,7 @@ document.getElementById("next").onclick = ()=>step(1);
 /* Curseur rond noir */
 const cur = document.getElementById("cursor");
 if(matchMedia("(hover:hover) and (pointer:fine)").matches){
-  addEventListener("mousemove", e=>{ cur.style.translate=e.clientX+"px "+e.clientY+"px"; cur.classList.add("show"); cur.classList.toggle("big", !!location.hash.slice(1) && !!e.target.closest("a,button,.t,.lb")); });
+  addEventListener("mousemove", e=>{ cur.style.translate=e.clientX+"px "+e.clientY+"px"; cur.classList.add("show"); cur.classList.toggle("big", !!e.target.closest("a,button,.t,.lb,.splash," + ZSEL)); });
   addEventListener("hashchange", ()=>cur.classList.remove("big"));
   document.addEventListener("mouseleave", ()=>cur.classList.remove("show"));
 }
