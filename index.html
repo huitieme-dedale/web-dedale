@@ -166,7 +166,13 @@ button{font-family:inherit}
 h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
 /* Menu déroulant : au survol, l'encart se décale vers la droite et passe en Bold B (wght 7) */
 #list .lbl{transition:transform .22s cubic-bezier(.2,.7,.2,1),background .15s,color .15s,font-variation-settings .22s}
-#list li:hover .lbl,#list .lbl:focus-visible{transform:translateX(12px);font-variation-settings:"wght" 8}
+#list li:hover .lbl,#list .lbl:focus-visible,#list .lbl.on{transform:translateX(12px);font-variation-settings:"wght" 8}
+#list .lbl.on{background:var(--boxink);color:var(--box)}
+/* liens : légèrement plus gras au survol */
+a:not(.btn),.tag{transition:font-variation-settings .2s}
+a:not(.btn):hover,a:not(.btn):focus-visible,.tag:hover,.tag:focus-visible{font-variation-settings:"wght" 5}
+.btn{transition:font-variation-settings .2s,background .15s,color .15s}
+.btn:hover,.btn:focus-visible{font-variation-settings:"wght" 7}
 #name,.toggle.lang{transition:background .15s,color .15s,font-variation-settings .22s}
 #name:hover,#name:focus-visible,.toggle.lang:hover,.toggle.lang:focus-visible{font-variation-settings:"wght" 8}
 .toggle.lang{--mf:clamp(.78rem,1.2vw,1.02rem);position:fixed;top:calc(env(safe-area-inset-top,0px) + 24px);right:24px;z-index:11;width:auto;padding:0 13px;font-family:inherit;font-size:var(--mf);letter-spacing:.06em;font-variation-settings:"wght" 6;font-weight:400}
@@ -339,6 +345,7 @@ function render(){
   if(ok) showProject(+m[1]);
   else if(ab) showAbout(h);
   else { page.hidden = true; feed.hidden = false; window.scrollTo({top:0}); }
+  markMenu();
 }
 function go(h){ try{ location.hash = h; }catch(e){} render(); }
 addEventListener("hashchange", render);
@@ -496,13 +503,19 @@ let curFilter = "Tous";
 function buildMenu(){
   list.innerHTML =
     `<li><button class="lbl" id="about-btn" type="button">${L_("À propos")}</button></li>` +
-    cats.map(c=>`<li${c==="Sérigraphie"||gapBefore.includes(c)?' class="gap"':""}><button class="lbl${c===curFilter?" on":""}" data-f="${c}" type="button">${clabel(c)}</button></li>`).join("");
+    cats.map(c=>`<li${c==="Sérigraphie"||gapBefore.includes(c)?' class="gap"':""}><button class="lbl" data-f="${c}" type="button">${clabel(c)}</button></li>`).join("");
 }
-buildMenu();
+/* Section active : mise en évidence comme au survol (À propos, Tools, Exposition, ou le filtre courant) */
+function markMenu(){
+  const h = (location.hash||"").slice(1), isP = /^p-\d+$/.test(h);
+  const act = h==="apropos" ? "about" : h==="tools" ? "Tools" : h==="exposition" ? "Exposition" : (!isP && curFilter!=="Tous" ? curFilter : null);
+  list.querySelectorAll(".lbl").forEach(b=>b.classList.toggle("on", act!==null && (b.id==="about-btn" ? act==="about" : b.dataset.f===act)));
+}
+buildMenu(); markMenu();
 
 function filter(f){
   curFilter = f; go("");
-  list.querySelectorAll("[data-f]").forEach(b=>b.classList.toggle("on", b.dataset.f===f));
+  markMenu();
   feed.querySelectorAll(".t").forEach(t=>{ t.hidden = f!=="Tous" && !t.dataset.cat.split("|").includes(f);
     const p = projects[t.dataset.i], c = f==="Tous" ? p.col : (p.colBy && p.colBy[f]);
     if(c) t.style.setProperty("--col", c); else t.style.removeProperty("--col");
@@ -511,7 +524,7 @@ function filter(f){
 }
 list.addEventListener("click", e=>{
   const b = e.target.closest("button"); if(!b) return;
-  if(b.id==="about-btn") go("apropos"); else if(b.classList.contains("on")) filter("Tous"); else cat(b.dataset.f);
+  if(b.id==="about-btn") go("apropos"); else cat(b.dataset.f);
 });
 document.getElementById("name").onclick = ()=>filter("Tous");
 
@@ -563,7 +576,7 @@ function applyLang(rerender){
   document.getElementById("prev").setAttribute("aria-label", L_("Projet précédent"));
   document.getElementById("next").setAttribute("aria-label", L_("Projet suivant"));
   feed.querySelectorAll(".t").forEach(t=>t.setAttribute("aria-label", L_("Ouvrir le projet")+" "+projects[t.dataset.i].title));
-  buildMenu();
+  buildMenu(); markMenu();
   if(rerender){ const y = scrollY; render(); scrollTo({top:y}); }
 }
 /* Même hauteur que le bouton « Huitième Dédale » pour rester aligné avec le menu */
