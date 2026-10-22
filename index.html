@@ -159,6 +159,8 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
 /* Menu déroulant : au survol, l'encart se décale vers la droite et passe en Bold B (wght 7) */
 #list .lbl{transition:transform .22s cubic-bezier(.2,.7,.2,1),background .15s,color .15s,font-variation-settings .22s}
 #list .lbl:hover,#list .lbl:focus-visible{transform:translateX(12px);font-variation-settings:"wght" 8}
+.toggle.lang{width:auto;padding:0 13px;font-family:inherit;font-size:.82rem;letter-spacing:.06em;font-variation-settings:"wght" 6;font-weight:400}
+@media (max-width:640px){.toggle.lang{padding:0 10px;font-size:.78rem}}
 </style>
 </head>
 <body>
@@ -169,6 +171,7 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
     <button class="toggle" id="toggle" type="button" aria-expanded="true" aria-controls="list" aria-label="Afficher ou masquer le menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M5 15l7-7 7 7"/></svg>
     </button>
+    <button class="toggle lang" id="lang" type="button" lang="en" aria-label="Switch to English">EN</button>
     <button class="toggle" id="prev" type="button" aria-label="Projet précédent">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
     </button>
@@ -200,6 +203,22 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
   </aside>
 </template>
 
+<template id="about-tpl-en">
+  <div class="txt textpage about-txt">
+    <h2 id="a-title">About</h2>
+    <p>Huitième Dédale is the name of a graphic design studio specialising in screen printing and risography, founded by Octave Hervé. The studio’s work covers many areas of graphic design, such as visual identity, signage, editorial and web design, and poster production…</p>
+    <p>“My first contact with graphic design came through street art and lettering. Drawn to industrial and architectural drawing, I first steered my studies towards architecture. To prepare for the entrance exam of the ENSAB, I took a preparatory course in applied arts at LISAA, where I was able to fully express my creativity. That experience convinced me to give up architecture and devote myself entirely to graphic design.</p>
+    <p>Once I had earned my graphic designer diploma, I continued my studies in 360° art direction, where I discovered a passion for screen printing and risograph printing. At the same time, I built up a freelance practice in which I create visual identities and posters.”</p>
+    <h2 class="divers">Miscellaneous</h2>
+    <p>Typeface used: Resum by <a href="https://www.bb-bureau.fr" target="_blank" rel="noopener">Benoît Bodhuin</a></p>
+    <p>Tool built with: <a href="https://www.instagram.com/lustat6am/" target="_blank" rel="noopener">LustAt6AM</a></p>
+    </div>
+  <aside class="txt contact-fixed" aria-label="Contact">
+    <h2>Contact</h2>
+    <p class="contact">Email:<br><a href="mailto:huitieme.dedale@gmail.com">huitieme.dedale@gmail.com</a><br>Instagram:<br><a href="https://instagram.com/huitieme.dedale" target="_blank" rel="noopener">@huitieme.dedale</a></p>
+  </aside>
+</template>
+
 <script>
 /* ============ À MODIFIER : vos projets ============
    w, h  : largeur et hauteur de la case, en cases de la grille (1 à 3).
@@ -223,6 +242,39 @@ const projects = [
   {title:"Danger Riso", col:3, colBy:{"Affiche":4,"Risographie":3}, cat:"Affiche", cats:["Affiche","Risographie"], year:2026, w:1,h:1, image:"media/danger-tile.jpg", link:"", bg:"#f3ead2", text:"Affiches imprimées en riso en bleu et orange fluo. Rappel sur l’importance de vider le bac à master et mise en garde du processus.", desc:"Affiches imprimées en riso en bleu et orange fluo. Rappel sur l’importance de vider le bac à master et mise en garde du processus.", blocks:[{"img":"media/danger-scan.jpg","w":1400,"h":1980,"fit":"56%","alt":"Scan de l’affiche Danger Riso"},{"video":"media/danger-video.mp4","poster":"media/danger-poster.jpg","w":900,"h":1200,"fit":"56%","alt":"Animation de l’affiche Danger Riso"},{"img":"media/danger-mockup.jpg","w":1400,"h":1867,"fit":"56%","alt":"Mockup de l’affiche Danger Riso posée sur une grille métallique"},{"img":"media/danger-master.jpg","w":1400,"h":1980,"fit":"56%","alt":"Master noir et blanc de l’affiche Danger Riso"}]},
   {"title": "Noir et Fluo", "col": 1, "colBy": {"Expérimentations": 1}, "cat": "Expérimentations", "cats": ["Expérimentations"], "year": 2026, "w": 2, "h": 2, "image": "media/nf-tile.jpg", "link": "", "bg": "#ffffff", "text": "Noir et Fluo est un projet d’expérimentation de recherche autour du contraste et de la répétition.", "desc": "Noir et Fluo est un projet d’expérimentation de recherche autour du contraste et de la répétition.", "blocks": [{"video": "media/nf-hero.mp4", "poster": "media/nf-hero-poster.jpg", "w": 1080, "h": 1420, "fit": "56%", "alt": "Animation de l’affiche Noir et Fluo"}], "fr": ["media/nf-01.jpg", "media/nf-02.jpg", "media/nf-03.jpg", "media/nf-04.jpg", "media/nf-05.jpg", "media/nf-06.jpg", "media/nf-07.jpg", "media/nf-08.jpg", "media/nf-09.jpg", "media/nf-10.jpg", "media/nf-11.jpg", "media/nf-12.jpg", "media/nf-13.jpg", "media/nf-14.jpg", "media/nf-15.jpg"], "frD": [[780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103], [780, 1103]], "frLabel": "Affiches tamponnées", "frExact": true, "after": [{"mix": [{"video": "media/nf-comp.mp4", "poster": "media/nf-comp-poster.jpg", "w": 1080, "h": 1440}, {"img": "media/nf-note.jpg", "w": 1300, "h": 1839}], "fit": "78%", "alt": "Compilation des affiches tamponnées et note d’intention du projet Noir et Fluo"}]}
 ];
+
+/* ===== Langue : FR / EN ===== */
+const EN = {
+  texts:{
+    "Clab":"Rebranding of the radio station Clab. Creation of a visual identity, a typeface, a pictogram system and social media template modules.",
+    "Gamecube Riso":"Animation of the iconic GameCube logo, reinterpreted in risography.",
+    "RVB Posters":"Poster screen printed in the RGB style, using iridescent ink in the printing process.",
+    "Towards Happiness":"Poster proposal for Feldup’s tour for the album Towards Happiness.",
+    "Kodak Macule":"Do you own a 1951 Kodak A Model 11? Are you a seasoned photographer? Then this micro-edition is made for you!",
+    "Une du 17":"Poster for the demonstration of 17 October. A collage of newspaper front pages from September 1939.",
+    "Mathison Turing":"Posters screen printed in black on fluorescent yellow and green paper.",
+    "Extreme Specimen Grunge":"Poster screen printed in silver on black, A2 format. A cathartic architectural collage.",
+    "Swiss Posters":"Poster paying tribute to the great names of Swiss graphic design, who have been a source of inspiration.",
+    "Affiche Boom":"A series of 4 screen-printed posters. The theme is the gap between the gravity of the subject and the colour palette.",
+    "Brutalist Type":"Creation of an alphabet from elements taken from the real world. The construction of the glyphs is built around the theme of brutalism. Each glyph works with the negative space produced by the silhouette of the structures.",
+    "Dedale Stickers":"Stickers screen printed on yellow vinyl paper.",
+    "Danger Riso":"Posters printed in riso in blue and fluorescent orange. A reminder of the importance of emptying the master disposal box, and a warning about the process.",
+    "Noir et Fluo":"Noir et Fluo is an experimental research project around contrast and repetition."
+  },
+  cats:{"Identité":"Identity","Affiche":"Poster","Sérigraphie":"Screen printing","Risographie":"Risography","Typographie":"Typography","Édition":"Publishing","Expérimentations":"Experiments","Exposition":"Exhibition","Tools":"Tools"},
+  ui:{
+    "À propos":"About","Projet suivant":"Next project","Projet précédent":"Previous project","Voir le projet":"View project","Bientôt en cours":"Coming soon",
+    "Pages scannées":"Scanned pages","Pages imprimées en risographie":"Risograph-printed pages","Frames risographiées":"Risographed frames",
+    "Charte graphique":"Brand guidelines","Affiches tamponnées":"Stamped posters","Page précédente":"Previous page","Page suivante":"Next page",
+    "Ouvrir le projet":"Open project","Revenir à tous les projets":"Back to all projects","Afficher ou masquer le menu":"Show or hide the menu",
+    "Navigation principale":"Main navigation","Exposition":"Exhibition","Huitième Dédale – Graphiste":"Huitième Dédale – Graphic designer"
+  }
+};
+let lang = "fr";
+try{ const v = localStorage.getItem("lang"); if(v==="en" || v==="fr") lang = v; }catch(e){}
+const L_ = fr => (lang==="en" && EN.ui[fr]) || fr;
+const clabel = c => (lang==="en" && EN.cats[c]) || c;
+const ptext = p => (lang==="en" && EN.texts[p.title]) || p.text || LOREM;
 
 const feed = document.getElementById("feed"), list = document.getElementById("list");
 const page = document.getElementById("page");
@@ -255,9 +307,9 @@ const ARROW_R = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 function edZone(label, arr, dims, title, land, exact){
   const all = [0,1,2].flatMap(()=>arr.map((f,k)=>[f,k]));
   return `<section class="ed${land?" land":""}" data-ed aria-label="${label}"><div class="ed-cap"><span>${label}</span><span class="ed-n" aria-live="polite"></span></div>
-    <div class="ed-wrap"><button class="toggle ed-btn l" type="button" aria-label="Page précédente">${ARROW_L}</button>
+    <div class="ed-wrap"><button class="toggle ed-btn l" type="button" aria-label="${L_("Page précédente")}">${ARROW_L}</button>
     <div class="ed-strip" tabindex="0">${all.map(([f,k])=>`<img src="${f}" width="${dims[k][0]}" height="${dims[k][1]}"${(land||exact)?` style="aspect-ratio:${dims[k][0]}/${dims[k][1]}"`:""} decoding="async" alt="${label}, page ${k+1} de ${title}">`).join("")}</div>
-    <button class="toggle ed-btn r" type="button" aria-label="Page suivante">${ARROW_R}</button></div></section>`;
+    <button class="toggle ed-btn r" type="button" aria-label="${L_("Page suivante")}">${ARROW_R}</button></div></section>`;
 }
 function blocksHTML(p,key){
   return `<div class="blocks">${p[key||"blocks"].map(b=> b.mix
@@ -295,19 +347,19 @@ function initEd(){
   });
 }
 function showAbout(h){
-  if(h==="apropos") open_(document.getElementById("about-tpl").innerHTML);
-  else open_(`<div class="txt textpage about-txt"><h2>${h==="tools"?"Tools":"Exposition"}</h2><p>Bientôt en cours</p></div>`);
+  if(h==="apropos") open_(document.getElementById(lang==="en" ? "about-tpl-en" : "about-tpl").innerHTML);
+  else open_(`<div class="txt textpage about-txt"><h2>${h==="tools"?"Tools":L_("Exposition")}</h2><p>${L_("Bientôt en cours")}</p></div>`);
 }
 function cat(c){ if(c==="Tools"||c==="Exposition") go(c.toLowerCase()); else filter(c); }
 function showProject(i){
   const p = projects[i], n = (i+1)%projects.length;
-  open_(`<div class="phead${p.wide?" wide":""}"><div><h1>${p.title}</h1><p class="sub">${(p.cats||[p.cat]).join(", ")}, ${p.year}</p></div>
-    <div class="ptxt"><p>${p.text||LOREM}</p>${p.link?`<a class="btn" href="${p.link}" target="_blank" rel="noopener">Voir le projet</a>`:""}</div></div>
+  open_(`<div class="phead${p.wide?" wide":""}"><div><h1>${p.title}</h1><p class="sub">${(p.cats||[p.cat]).map(clabel).join(", ")}, ${p.year}</p></div>
+    <div class="ptxt"><p>${ptext(p)}</p>${p.link?`<a class="btn" href="${p.link}" target="_blank" rel="noopener">${L_("Voir le projet")}</a>`:""}</div></div>
     <div class="hero${p.image?" fit":""}${p.scans||p.blocks?" nohero":""}" style="background:${p.bg}${p.pw?`;--pw:${p.pw}`:""}">${p.photo?`<div class="pair">${vis(p)}<img src="${p.photo}" alt="L’affiche portée lors de la manifestation du 17 octobre" loading="lazy"></div>`:vis(p)}</div>
     ${p.mockup?`<img class="mock" src="${p.mockup}" alt="Mockup de l’affiche ${p.title}" loading="lazy">`:""}${p.frames?`<div class="frames">${p.frames.map((f,k)=>`<img src="${f}" alt="Détail ${k+1} de l’affiche ${p.title}" loading="lazy">`).join("")}</div>`:""}
-    ${p.blocks?blocksHTML(p):""}${p.extra?edRow(p.extra,p.extraD,p.title):""}${p.scans?edZone("Pages scannées",p.scans,p.scansD,p.title):""}${p.riso?edZone("Pages imprimées en risographie",p.riso,p.risoD,p.title):""}${p.fr?edZone(p.frLabel||"Frames risographiées",p.fr,p.frD,p.title,!p.frExact,!!p.frExact):""}${p.after?blocksHTML(p,"after"):""}
+    ${p.blocks?blocksHTML(p):""}${p.extra?edRow(p.extra,p.extraD,p.title):""}${p.scans?edZone(L_("Pages scannées"),p.scans,p.scansD,p.title):""}${p.riso?edZone(L_("Pages imprimées en risographie"),p.riso,p.risoD,p.title):""}${p.fr?edZone(L_(p.frLabel||"Frames risographiées"),p.fr,p.frD,p.title,!p.frExact,!!p.frExact):""}${p.after?blocksHTML(p,"after"):""}
     ${(p.gallery||[]).map(g=>`<img class="g" src="${g}" alt="Visuel du projet ${p.title}" loading="lazy">`).join("")}
-    <div class="pnext"><button class="lbl" data-go="p-${n}" type="button">Projet suivant</button></div>`);
+    <div class="pnext"><button class="lbl" data-go="p-${n}" type="button">${L_("Projet suivant")}</button></div>`);
 }
 /* ===== Image agrandie : un toucher ouvre, un toucher ferme ; pincer (ou molette) pour zoomer, glisser pour déplacer ===== */
 const ZSEL = ".blocks img,.ed-strip img,.ed-row img,.mock,.frames img,.g,.hero.fit img,.pair img";
@@ -398,12 +450,16 @@ feed.innerHTML = projects.map((p,i)=>
 
 /* Ordre du menu (À propos s’affiche en premier) */
 const cats = ["Identité","Affiche","Sérigraphie","Risographie","Typographie","Édition","Expérimentations","Exposition","Tools"];
-list.innerHTML =
-  `<li><button class="lbl" id="about-btn" type="button">À propos</button></li>` +
-  cats.map(c=>`<li><button class="lbl" data-f="${c}" type="button">${c}</button></li>`).join("");
+let curFilter = "Tous";
+function buildMenu(){
+  list.innerHTML =
+    `<li><button class="lbl" id="about-btn" type="button">${L_("À propos")}</button></li>` +
+    cats.map(c=>`<li><button class="lbl${c===curFilter?" on":""}" data-f="${c}" type="button">${clabel(c)}</button></li>`).join("");
+}
+buildMenu();
 
 function filter(f){
-  go("");
+  curFilter = f; go("");
   list.querySelectorAll("[data-f]").forEach(b=>b.classList.toggle("on", b.dataset.f===f));
   feed.querySelectorAll(".t").forEach(t=>{ t.hidden = f!=="Tous" && !t.dataset.cat.split("|").includes(f);
     const p = projects[t.dataset.i], c = f==="Tous" ? p.col : (p.colBy && p.colBy[f]);
@@ -454,6 +510,29 @@ if(matchMedia("(hover:hover) and (pointer:fine)").matches){
   addEventListener("hashchange", ()=>cur.classList.remove("big"));
   document.addEventListener("mouseleave", ()=>cur.classList.remove("show"));
 }
+/* Bascule FR / EN : met à jour le menu, les descriptions, la page À propos et les libellés */
+const langBtn = document.getElementById("lang");
+function applyLang(rerender){
+  document.documentElement.lang = lang;
+  langBtn.textContent = lang==="fr" ? "EN" : "FR";
+  langBtn.lang = lang==="fr" ? "en" : "fr";
+  langBtn.setAttribute("aria-label", lang==="fr" ? "Switch to English" : "Passer en français");
+  document.title = L_("Huitième Dédale – Graphiste");
+  document.querySelector(".menu").setAttribute("aria-label", L_("Navigation principale"));
+  document.getElementById("name").setAttribute("aria-label", L_("Revenir à tous les projets"));
+  document.getElementById("toggle").setAttribute("aria-label", L_("Afficher ou masquer le menu"));
+  document.getElementById("prev").setAttribute("aria-label", L_("Projet précédent"));
+  document.getElementById("next").setAttribute("aria-label", L_("Projet suivant"));
+  feed.querySelectorAll(".t").forEach(t=>t.setAttribute("aria-label", L_("Ouvrir le projet")+" "+projects[t.dataset.i].title));
+  buildMenu();
+  if(rerender){ const y = scrollY; render(); scrollTo({top:y}); }
+}
+langBtn.onclick = ()=>{
+  lang = lang==="fr" ? "en" : "fr";
+  try{ localStorage.setItem("lang", lang); }catch(e){}
+  applyLang(true);
+};
+applyLang(false);
 render();
 </script>
 </body>
