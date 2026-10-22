@@ -314,7 +314,7 @@ function setMenu(o){
   const lis = [...list.children]; lis.forEach((li,i)=>li.style.setProperty("--i", i)); list.style.setProperty("--n", lis.length);
   if(o){ list.hidden = false; if(!was) playUnroll(); }
   else if(was && !list.hidden){ list.classList.remove("unroll"); list.classList.add("roll"); menuT = setTimeout(()=>{ list.hidden = true; list.classList.remove("roll"); }, 300 + lis.length*28); }
-  else { list.hidden = true; }
+  else if(!list.classList.contains("roll")){ list.hidden = true; }   /* déjà en train de s’enrouler : on laisse finir */
 }
 
 /* Navigation : #p-N = page projet, #apropos = à propos, sinon le feed */
