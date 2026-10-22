@@ -167,6 +167,8 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
 /* Menu déroulant : au survol, l'encart se décale vers la droite et passe en Bold B (wght 7) */
 #list .lbl{transition:transform .22s cubic-bezier(.2,.7,.2,1),background .15s,color .15s,font-variation-settings .22s}
 #list li:hover .lbl,#list .lbl:focus-visible{transform:translateX(12px);font-variation-settings:"wght" 8}
+#name,.toggle.lang{transition:background .15s,color .15s,font-variation-settings .22s}
+#name:hover,#name:focus-visible,.toggle.lang:hover,.toggle.lang:focus-visible{font-variation-settings:"wght" 8}
 .toggle.lang{--mf:clamp(.78rem,1.2vw,1.02rem);position:fixed;top:calc(env(safe-area-inset-top,0px) + 24px);right:24px;z-index:11;width:auto;padding:0 13px;font-family:inherit;font-size:var(--mf);letter-spacing:.06em;font-variation-settings:"wght" 6;font-weight:400}
 @media (max-width:640px){.toggle.lang{padding:0 10px}}
 
