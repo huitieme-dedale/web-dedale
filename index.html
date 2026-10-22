@@ -71,8 +71,8 @@ body.lbopen{overflow:hidden}
 .toggle{background:var(--box);color:var(--boxink);border:0;width:40px;cursor:pointer;display:grid;place-items:center}
 .toggle svg{width:18px;height:18px;transition:transform .2s}
 .toggle[aria-expanded="false"] svg{transform:rotate(180deg)}
-#name{padding:13px 20px}
-@media (max-width:640px){#name{padding:12px 16px}.menu{top:calc(env(safe-area-inset-top,0px) + 18px);left:18px;max-width:calc(100vw - 36px)}.toggle.lang{top:calc(env(safe-area-inset-top,0px) + 18px)!important;right:18px!important}.lbl{padding:6px 10px}.toggle{width:40px}}
+#name{padding:12px 18px;font-size:clamp(.92rem,1.5vw,1.2rem)}
+@media (max-width:640px){#name{padding:11px 14px;font-size:.88rem}.menu{top:calc(env(safe-area-inset-top,0px) + 18px);left:18px;max-width:calc(100vw - 36px)}.toggle.lang{top:calc(env(safe-area-inset-top,0px) + 18px)!important;right:18px!important}.lbl{padding:6px 10px}.toggle{width:40px}}
 
 /* Pages */
 .hero{position:relative;width:100%;aspect-ratio:16/9;background-size:cover;overflow:hidden}
@@ -85,7 +85,7 @@ body.lbopen{overflow:hidden}
 .frames{display:grid;grid-template-columns:repeat(4,1fr);gap:0;width:var(--pw);margin:28px auto 0}
 .frames img{display:block;width:100%;height:auto}
 body.aboutpg{--bg:#0d0d0d;--ink:#fff}
-body.aboutpg .lbl,body.aboutpg .toggle{box-shadow:0 0 0 3px #f2f2ee}
+body.aboutpg .lbl,body.aboutpg .toggle{box-shadow:0 0 0 2px #f2f2ee}
 .about-txt .divers{margin-top:clamp(24px,3vw,44px)}
 .about-txt a{color:inherit;text-underline-offset:4px}
 .about-txt{font-size:clamp(1.05rem,1.6vw,1.4rem);gap:clamp(34px,4.5vw,60px)}
@@ -132,10 +132,10 @@ body.proj.lightproj .lbl,body.proj.lightproj .toggle,body.proj.lightproj .btn{bo
 
 /* Page projet (fond sombre) */
 body.proj{--bg:#0d0d0d;--ink:#f2f2ee}
-body.proj .lbl,body.proj .toggle,body.proj .btn{box-shadow:0 0 0 3px #f2f2ee}
+body.proj .lbl,body.proj .toggle,body.proj .btn{box-shadow:0 0 0 2px #f2f2ee}
 /* Page principale : fond noir */
 body:not(.proj):not(.aboutpg){--bg:#000;--ink:#f2f2ee}
-body:not(.proj):not(.aboutpg) .lbl,body:not(.proj):not(.aboutpg) .toggle{box-shadow:0 0 0 3px #f2f2ee}
+body:not(.proj):not(.aboutpg) .lbl,body:not(.proj):not(.aboutpg) .toggle{box-shadow:0 0 0 2px #f2f2ee}
 .phead{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:150px 36px 70px}
 .phead h1{font-weight:400;font-size:clamp(2rem,4.5vw,4.2rem);text-transform:uppercase;letter-spacing:.02em;line-height:1}
 .tags{margin-top:22px}
@@ -143,7 +143,7 @@ body:not(.proj):not(.aboutpg) .lbl,body:not(.proj):not(.aboutpg) .toggle{box-sha
 .tag:hover{color:var(--ink)}
 .sub{margin-top:22px;color:#a5a5a0;text-transform:uppercase;letter-spacing:.09em;font-size:clamp(.8rem,1.2vw,1.05rem)}
 .ptxt{font-size:clamp(1.05rem,1.7vw,1.5rem);line-height:1.6;display:flex;flex-direction:column;gap:20px;align-items:flex-start;padding-top:6px}
-.pnext{padding:30px 36px 40px}
+.pnext{padding:30px 36px 40px;display:flex;justify-content:space-between;gap:12px}
 @media (max-width:700px){.phead{grid-template-columns:1fr;padding:110px 18px 40px;gap:24px}.pnext{padding:24px 18px 32px}}
 
 /* Zoom au clic */
@@ -284,7 +284,7 @@ const EN = {
   },
   cats:{"Identité":"Identity","Affiche":"Poster","Sérigraphie":"Screen printing","Risographie":"Risography","Typographie":"Typography","Édition":"Publishing","Expérimentations":"Experiments","Exposition":"Exhibition","Tools":"Tools"},
   ui:{
-    "À propos":"About","Projet suivant":"Next project","Projet précédent":"Previous project","Voir le projet":"View project","Bientôt en cours":"Coming soon",
+    "À propos":"About","Projet suivant":"Next project","Projet précédent":"Previous project","Projet précédent":"Previous project","Voir le projet":"View project","Bientôt en cours":"Coming soon",
     "Pages scannées":"Scanned pages","Pages imprimées en risographie":"Risograph-printed pages","Frames risographiées":"Risographed frames",
     "Charte graphique":"Brand guidelines","Affiches tamponnées":"Stamped posters","Page précédente":"Previous page","Page suivante":"Next page",
     "Ouvrir le projet":"Open project","Revenir à tous les projets":"Back to all projects","Afficher ou masquer le menu":"Show or hide the menu",
@@ -395,7 +395,7 @@ function showProject(i){
     ${p.mockup?`<img class="mock" src="${p.mockup}" alt="Mockup de l’affiche ${p.title}" loading="lazy">`:""}${p.frames?`<div class="frames">${p.frames.map((f,k)=>`<img src="${f}" alt="Détail ${k+1} de l’affiche ${p.title}" loading="lazy">`).join("")}</div>`:""}
     ${p.blocks?blocksHTML(p):""}${p.extra?edRow(p.extra,p.extraD,p.title):""}${p.scans?edZone(L_("Pages scannées"),p.scans,p.scansD,p.title):""}${p.riso?edZone(L_("Pages imprimées en risographie"),p.riso,p.risoD,p.title):""}${p.fr?edZone(L_(p.frLabel||"Frames risographiées"),p.fr,p.frD,p.title,!p.frExact,!!p.frExact):""}${p.after?blocksHTML(p,"after"):""}
     ${(p.gallery||[]).map(g=>`<img class="g" src="${g}" alt="Visuel du projet ${p.title}" loading="lazy">`).join("")}
-    <div class="pnext"><button class="lbl" data-go="p-${n}" type="button">${L_("Projet suivant")}</button></div>`);
+    <div class="pnext"><button class="lbl" data-go="p-${(i-1+projects.length)%projects.length}" type="button">← ${L_("Projet précédent")}</button><button class="lbl" data-go="p-${n}" type="button">${L_("Projet suivant")} →</button></div>`);
 }
 /* ===== Image agrandie : un toucher ouvre, un toucher ferme ; pincer (ou molette) pour zoomer, glisser pour déplacer ===== */
 const ZSEL = ".blocks img,.ed-strip img,.ed-row img,.mock,.frames img,.g,.hero.fit img,.pair img";
