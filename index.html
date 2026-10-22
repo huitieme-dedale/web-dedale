@@ -159,7 +159,7 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
 /* Menu déroulant : au survol, l'encart se décale vers la droite et passe en Bold B (wght 7) */
 #list .lbl{transition:transform .22s cubic-bezier(.2,.7,.2,1),background .15s,color .15s,font-variation-settings .22s}
 #list .lbl:hover,#list .lbl:focus-visible{transform:translateX(12px);font-variation-settings:"wght" 8}
-.toggle.lang{width:auto;padding:0 13px;font-family:inherit;font-size:.82rem;letter-spacing:.06em;font-variation-settings:"wght" 6;font-weight:400}
+.toggle.lang{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);right:14px;z-index:11;width:auto;padding:0 13px;font-family:inherit;font-size:.82rem;letter-spacing:.06em;font-variation-settings:"wght" 6;font-weight:400}
 @media (max-width:640px){.toggle.lang{padding:0 10px;font-size:.78rem}}
 </style>
 </head>
@@ -527,6 +527,9 @@ function applyLang(rerender){
   buildMenu();
   if(rerender){ const y = scrollY; render(); scrollTo({top:y}); }
 }
+/* Même hauteur que le bouton « Huitième Dédale » pour rester aligné avec le menu */
+const syncLang = ()=>{ const h = document.getElementById("name").offsetHeight; if(h) langBtn.style.height = h+"px"; };
+syncLang(); addEventListener("resize", syncLang); if(document.fonts && document.fonts.ready) document.fonts.ready.then(syncLang);
 langBtn.onclick = ()=>{
   lang = lang==="fr" ? "en" : "fr";
   try{ localStorage.setItem("lang", lang); }catch(e){}
