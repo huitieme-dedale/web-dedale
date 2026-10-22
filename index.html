@@ -54,7 +54,7 @@ body.lbopen{overflow:hidden}
 
 
 /* Menu flottant */
-.menu{position:fixed;z-index:10;top:calc(env(safe-area-inset-top,0px) + 24px);left:24px;max-width:calc(100vw - 48px)}
+.menu{--mf:clamp(.78rem,1.2vw,1.02rem);position:fixed;z-index:10;top:calc(env(safe-area-inset-top,0px) + 24px);left:24px;max-width:calc(100vw - 48px)}
 .menu ul{list-style:none;display:flex;flex-direction:column;align-items:flex-start;gap:5px;margin-top:5px}
 .menu ul[hidden]{display:none}
 .splashing .menu ul{display:none}
@@ -65,14 +65,14 @@ body.lbopen{overflow:hidden}
 @keyframes mIn{from{opacity:0;transform:translateY(-18px) scaleY(.4)}to{opacity:1;transform:none}}
 @keyframes mOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-18px) scaleY(.4)}}
 .row{display:flex;gap:5px;align-items:stretch}
-.lbl{font:inherit;font-weight:400;font-size:clamp(.72rem,1.2vw,1rem);letter-spacing:.09em;text-transform:uppercase;background:var(--box);color:var(--boxink);border:0;padding:8px 14px;cursor:pointer;text-align:left}
+.lbl{font:inherit;font-weight:400;font-size:var(--mf);letter-spacing:.09em;text-transform:uppercase;background:var(--box);color:var(--boxink);border:0;padding:8px 14px;cursor:pointer;text-align:left}
 .lbl:hover,.toggle:hover{background:var(--boxink);color:var(--box)}
 .lbl.on{background:var(--light);color:var(--ink)}
 .toggle{background:var(--box);color:var(--boxink);border:0;width:40px;cursor:pointer;display:grid;place-items:center}
 .toggle svg{width:18px;height:18px;transition:transform .2s}
 .toggle[aria-expanded="false"] svg{transform:rotate(180deg)}
-#name{padding:12px 18px;font-size:clamp(.92rem,1.5vw,1.2rem)}
-@media (max-width:640px){#name{padding:11px 14px;font-size:.88rem}.menu{top:calc(env(safe-area-inset-top,0px) + 18px);left:18px;max-width:calc(100vw - 36px)}.toggle.lang{top:calc(env(safe-area-inset-top,0px) + 18px)!important;right:18px!important}.lbl{padding:6px 10px}.toggle{width:40px}}
+#name{padding:9px 16px}
+@media (max-width:640px){#name{padding:8px 12px}.menu{top:calc(env(safe-area-inset-top,0px) + 18px);left:18px;max-width:calc(100vw - 36px)}.toggle.lang{top:calc(env(safe-area-inset-top,0px) + 18px)!important;right:18px!important}.lbl{padding:6px 10px}.toggle{width:40px}}
 
 /* Pages */
 .hero{position:relative;width:100%;aspect-ratio:16/9;background-size:cover;overflow:hidden}
@@ -167,8 +167,8 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
 /* Menu déroulant : au survol, l'encart se décale vers la droite et passe en Bold B (wght 7) */
 #list .lbl{transition:transform .22s cubic-bezier(.2,.7,.2,1),background .15s,color .15s,font-variation-settings .22s}
 #list .lbl:hover,#list .lbl:focus-visible{transform:translateX(12px);font-variation-settings:"wght" 8}
-.toggle.lang{position:fixed;top:calc(env(safe-area-inset-top,0px) + 24px);right:24px;z-index:11;width:auto;padding:0 13px;font-family:inherit;font-size:.82rem;letter-spacing:.06em;font-variation-settings:"wght" 6;font-weight:400}
-@media (max-width:640px){.toggle.lang{padding:0 10px;font-size:.78rem}}
+.toggle.lang{--mf:clamp(.78rem,1.2vw,1.02rem);position:fixed;top:calc(env(safe-area-inset-top,0px) + 24px);right:24px;z-index:11;width:auto;padding:0 13px;font-family:inherit;font-size:var(--mf);letter-spacing:.06em;font-variation-settings:"wght" 6;font-weight:400}
+@media (max-width:640px){.toggle.lang{padding:0 10px}}
 
 /* Écran d’accueil : « Huitième Dédale » éclot lettre par lettre (graisses de Resum) puis vient se ranger dans le menu */
 .splash{position:fixed;inset:0;z-index:900;background:#000;color:#f2f2ee;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}
