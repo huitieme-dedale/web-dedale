@@ -40,6 +40,8 @@ body{background:var(--bg);color:var(--ink);font-family:"Resum",system-ui,-apple-
 @media (max-width:640px){:root{--cols:4}}
 /* Sur mobile/tablette la grille a moins de 8 colonnes : les colonnes imposées sont ignorées (sinon des colonnes implicites cachent des projets) */
 @media (max-width:1000px){.t{grid-column:auto / span var(--w)!important;order:var(--mo,0)}}
+/* Téléphone : pas de nom de projet sur les cases de la page principale */
+@media (max-width:640px){.t .cap{display:none!important}}
 
 /* Menu flottant */
 .menu{position:fixed;z-index:10;top:calc(env(safe-area-inset-top,0px) + 14px);left:14px;max-width:calc(100vw - 28px)}
