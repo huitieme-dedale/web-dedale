@@ -168,9 +168,9 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
 .sp-word{display:flex;white-space:pre;font-family:"Resum",system-ui,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.09em;line-height:1.15;transform-origin:center;will-change:transform}
 .sp-l{display:inline-block;text-align:center;padding:.4em 0;margin:-.4em 0;font-variation-settings:"wght" 6;opacity:0}
 .sp-l.go{animation:spIn .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i) * 35ms)}
-.sp-l.grow{animation:spGrow .8s cubic-bezier(.3,.7,.2,1) both;animation-delay:calc(var(--i) * 30ms)}
+.sp-l.grow{animation:spGrow .8s cubic-bezier(.4,0,.2,1) both;animation-delay:calc(var(--i) * 30ms)}
 @keyframes spIn{0%{opacity:0;transform:scale(.92);font-variation-settings:"wght" 0}100%{opacity:1;transform:scale(1);font-variation-settings:"wght" 0}}
-@keyframes spGrow{0%{opacity:1;transform:scale(1);font-variation-settings:"wght" 0}60%{transform:scale(1.07);font-variation-settings:"wght" var(--pk)}100%{opacity:1;transform:scale(1);font-variation-settings:"wght" var(--pk)}}
+@keyframes spGrow{0%{opacity:1;transform:scale(1);font-variation-settings:"wght" 0}100%{opacity:1;transform:scale(1);font-variation-settings:"wght" 8}}
 html.splashing,html.splashing body{overflow:hidden}
 html.splashing #name{color:transparent!important}
 </style>
@@ -564,9 +564,9 @@ render();
   const fontsReady = Promise.race([ (document.fonts && document.fonts.load) ? document.fonts.load('400 40px Resum').catch(()=>{}) : Promise.resolve(), new Promise(r=>setTimeout(r,1500)) ]);
   fontsReady.then(()=>{
     if(finished) return;
-    const base = [9,8,9,7,9,8,9,9,7,9,8,9,7,9,9], n = chars.length;
-    /* lettres accentuées : graisse plafonnée à 6, au-delà l’accent se fond dans la lettre */
-    const peaks = chars.map((c,i)=> /[^\u0000-\u007F]/.test(c) ? 6 : base[i%base.length]);
+    const n = chars.length;
+    /* de Light A (wght 0) à Black A (wght 8), pour toutes les lettres */
+    const peaks = chars.map(()=>8);
     word.innerHTML = chars.map((c,i)=>`<span class="sp-l" style="--i:${i};--pk:${peaks[i]}">${c}</span>`).join("");
     const ls = [...word.children], pk = i => peaks[i];
     const measure = (wg) => ls.map((l,i)=>{ l.style.width = ""; l.style.fontVariationSettings = `"wght" ${wg(i)}`; return l.getBoundingClientRect().width; });
