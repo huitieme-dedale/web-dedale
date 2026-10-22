@@ -7,7 +7,7 @@
 <meta name="description" content="Portfolio de Huitième Dédale, graphiste : identités, affiches, web, éditions et expérimentations.">
 <style>
 @font-face{font-family:"Resum";src:url("media/Resum.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
-:root{--bg:#f2f2ee;--ink:#111;--box:#111;--boxink:#f2f2ee;--light:#e7e7e1;--cols:8}
+:root{--g:4px;--bg:#f2f2ee;--ink:#111;--box:#111;--boxink:#f2f2ee;--light:#e7e7e1;--cols:8}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161616;--ink:#f2f2ee;--light:#2a2a28}}
 :root[data-theme="dark"]{--bg:#161616;--ink:#f2f2ee;--light:#2a2a28}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -26,7 +26,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Resum",system-ui,-apple-
 }
 
 /* Feed pleine largeur, sans gouttières */
-.feed{container-type:inline-size;display:grid;grid-template-columns:repeat(var(--cols),1fr);grid-auto-rows:calc(100cqw / var(--cols));grid-auto-flow:dense;gap:0}
+.feed{container-type:inline-size;display:grid;grid-template-columns:repeat(var(--cols),1fr);grid-auto-rows:calc((100cqw - (var(--cols) - 1) * var(--g)) / var(--cols));grid-auto-flow:dense;gap:var(--g);background:#000}
 .t{grid-column:var(--col,auto) / span var(--w);grid-row:span var(--h);position:relative;overflow:hidden;border:0;padding:0;cursor:pointer;display:block;background:var(--bg)}
 .t[hidden]{display:none}
 .t .v{position:absolute;inset:0;background-size:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
@@ -37,7 +37,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Resum",system-ui,-apple-
 .t:hover .cap,.t:focus-visible .cap{opacity:1}
 @media (hover:none){.t .cap{opacity:1}}
 @media (max-width:1000px){:root{--cols:6}}
-@media (max-width:640px){:root{--cols:4}}
+@media (max-width:640px){:root{--cols:4;--g:3px}}
 /* Sur mobile/tablette la grille a moins de 8 colonnes : les colonnes imposées sont ignorées (sinon des colonnes implicites cachent des projets) */
 @media (max-width:1000px){.t{grid-column:auto / span var(--w)!important;order:var(--mo,0)}}
 /* Téléphone : pas de nom de projet sur les cases de la page principale */
@@ -161,6 +161,21 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
 #list .lbl:hover,#list .lbl:focus-visible{transform:translateX(12px);font-variation-settings:"wght" 8}
 .toggle.lang{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);right:14px;z-index:11;width:auto;padding:0 13px;font-family:inherit;font-size:.82rem;letter-spacing:.06em;font-variation-settings:"wght" 6;font-weight:400}
 @media (max-width:640px){.toggle.lang{padding:0 10px;font-size:.78rem}}
+
+/* Écran d’accueil : « Huitième Dédale » éclot lettre par lettre (graisses de Resum) puis vient se ranger dans le menu */
+.splash{position:fixed;inset:0;z-index:900;background:#000;color:#f2f2ee;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}
+.splash.out{background:rgba(0,0,0,0);transition:background .9s ease}
+.sp-word{display:flex;white-space:pre;font-family:"Resum",system-ui,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.09em;line-height:1.15;transform-origin:center;will-change:transform}
+.sp-l{display:inline-block;text-align:center;font-variation-settings:"wght" 6;opacity:0;will-change:transform,opacity,filter}
+.sp-l.go{animation:spBloom 1s cubic-bezier(.25,.7,.2,1) both;animation-delay:calc(var(--i) * 48ms)}
+@keyframes spBloom{
+  0%{opacity:0;transform:scale(.15);font-variation-settings:"wght" var(--lo);filter:blur(12px)}
+  40%{opacity:1;transform:scale(1.28);font-variation-settings:"wght" var(--pk);filter:blur(0)}
+  68%{transform:scale(.95);font-variation-settings:"wght" var(--mid)}
+  100%{opacity:1;transform:scale(1);font-variation-settings:"wght" 6;filter:blur(0)}
+}
+html.splashing,html.splashing body{overflow:hidden}
+html.splashing #name{color:transparent!important}
 </style>
 </head>
 <body>
@@ -186,6 +201,7 @@ h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
 
 <section class="page" id="page" hidden></section>
 <div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="splash" id="splash" aria-hidden="true"><div class="sp-word" id="spWord"></div></div>
 
 <template id="about-tpl">
   <div class="txt textpage about-txt">
@@ -537,6 +553,45 @@ langBtn.onclick = ()=>{
 };
 applyLang(false);
 render();
+
+/* ===== Écran d’accueil ===== */
+(function(){
+  const sp = document.getElementById("splash"), word = document.getElementById("spWord"), name = document.getElementById("name");
+  if(!sp) return;
+  if((location.hash||"").length > 1 || matchMedia("(prefers-reduced-motion:reduce)").matches){ sp.remove(); return; }
+  document.documentElement.classList.add("splashing");
+  const txt = name.textContent.trim(), chars = [...txt];
+  let finished = false;
+  const finish = () => { if(finished) return; finished = true; document.documentElement.classList.remove("splashing"); sp.remove(); };
+  sp.addEventListener("click", finish);
+  const fontsReady = Promise.race([ (document.fonts && document.fonts.load) ? document.fonts.load('400 40px Resum').catch(()=>{}) : Promise.resolve(), new Promise(r=>setTimeout(r,1500)) ]);
+  fontsReady.then(()=>{
+    if(finished) return;
+    const peaks = [8,6,9,7,9,5,8,9,6,8,7,9,6,8,9];
+    word.innerHTML = chars.map((c,i)=>`<span class="sp-l" style="--i:${i};--lo:${i%3};--pk:${peaks[i%peaks.length]};--mid:${2+(i%4)}">${c}</span>`).join("");
+    const ls = [...word.children];
+    /* taille : la ligne occupe environ 86 % de la largeur */
+    word.style.fontSize = "100px"; ls.forEach(l=>l.style.width = "");
+    const w100 = word.getBoundingClientRect().width || 1;
+    const fs = Math.min(100*Math.min(innerWidth*.86, 1300)/w100, 200);
+    word.style.fontSize = fs+"px";
+    ls.forEach(l=>{ l.style.width = l.getBoundingClientRect().width+"px"; });   /* largeur figée : la graisse change sans décaler la ligne */
+    requestAnimationFrame(()=>{
+      ls.forEach(l=>l.classList.add("go"));
+      const bloomEnd = (ls.length-1)*48 + 1000;
+      setTimeout(()=>{
+        if(finished) return;
+        const r = document.createRange(); r.selectNodeContents(name); const t = r.getBoundingClientRect(), c = word.getBoundingClientRect();
+        const k = t.width / c.width, tx = (t.left+t.width/2) - (c.left+c.width/2), ty = (t.top+t.height/2) - (c.top+c.height/2);
+        word.style.transition = "transform .9s cubic-bezier(.7,0,.2,1)";
+        word.style.transform = `translate(${tx}px,${ty}px) scale(${k})`;
+        sp.classList.add("out");
+        setTimeout(finish, 960);
+      }, bloomEnd + 350);
+    });
+  });
+  setTimeout(finish, 7000);   /* sécurité */
+})();
 </script>
 </body>
 </html>
