@@ -55,16 +55,16 @@ body.lbopen{overflow:hidden}
 
 /* Menu flottant */
 .menu{position:fixed;z-index:10;top:calc(env(safe-area-inset-top,0px) + 14px);left:14px;max-width:calc(100vw - 28px)}
-.menu ul{list-style:none;display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:6px}
+.menu ul{list-style:none;display:flex;flex-direction:column;align-items:flex-start;gap:5px;margin-top:5px}
 .menu ul[hidden]{display:none}
-.row{display:flex;gap:6px;align-items:stretch}
-.lbl{font:inherit;font-weight:400;font-size:clamp(.85rem,1.4vw,1.15rem);letter-spacing:.09em;text-transform:uppercase;background:var(--box);color:var(--boxink);border:0;padding:10px 16px;cursor:pointer;text-align:left}
+.row{display:flex;gap:5px;align-items:stretch}
+.lbl{font:inherit;font-weight:400;font-size:clamp(.72rem,1.2vw,1rem);letter-spacing:.09em;text-transform:uppercase;background:var(--box);color:var(--boxink);border:0;padding:8px 14px;cursor:pointer;text-align:left}
 .lbl:hover,.toggle:hover{background:var(--boxink);color:var(--box)}
 .lbl.on{background:var(--light);color:var(--ink)}
-.toggle{background:var(--box);color:var(--boxink);border:0;width:46px;cursor:pointer;display:grid;place-items:center}
+.toggle{background:var(--box);color:var(--boxink);border:0;width:40px;cursor:pointer;display:grid;place-items:center}
 .toggle svg{width:18px;height:18px;transition:transform .2s}
 .toggle[aria-expanded="false"] svg{transform:rotate(180deg)}
-@media (max-width:640px){.lbl{padding:8px 12px}.toggle{width:38px}}
+@media (max-width:640px){.lbl{padding:6px 10px}.toggle{width:34px}}
 
 /* Pages */
 .hero{position:relative;width:100%;aspect-ratio:16/9;background-size:cover;overflow:hidden}
@@ -491,7 +491,7 @@ toggle.onclick = ()=>{
   const open = toggle.getAttribute("aria-expanded")==="true";
   toggle.setAttribute("aria-expanded", !open); list.hidden = open;
 };
-if(window.matchMedia("(max-width:640px)").matches){ toggle.click(); }
+/* le menu reste déroulé à l’ouverture, y compris sur téléphone */
 
 /* Zoom : la case s’agrandit jusqu’à remplir l’écran, puis la page du projet apparaît */
 function zoomTo(t){
