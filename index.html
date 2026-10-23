@@ -388,6 +388,7 @@ function initEd(){
     imgs.forEach((im,i)=>{ if(i<n || i>=2*n){ im.alt = ""; im.setAttribute("aria-hidden","true"); } });
     const pad = () => parseFloat(getComputedStyle(strip).paddingLeft)||0;
     const ctr = z.classList.contains("ctr");
+    if(ctr) [0,n,2*n].forEach(k=>{ if(imgs[k]) imgs[k].style.marginLeft = "clamp(160px,40vw,640px)"; });   /* grand vide noir entre la 4e de couverture et la couverture */
     const pos = im => ctr ? im.offsetLeft + im.offsetWidth/2 - strip.clientWidth/2 : im.offsetLeft - pad();   /* position de défilement : page alignée à gauche, ou centrée */
     const cur = () => { let b=0, d=1e9; imgs.forEach((im,k)=>{ const x=Math.abs(pos(im) - strip.scrollLeft); if(x<d){d=x;b=k;} }); return b; };
     const snap = v => { strip.style.scrollSnapType = v; };
