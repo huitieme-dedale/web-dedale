@@ -34,7 +34,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Resum",system-ui,-apple-
 .t:hover .v,.t:focus-visible .v{transform:scale(1.12)}
 .t:hover img,.t:focus-visible img{transform:scale(calc(var(--z,1)*1.12))}
 .t .cap{position:absolute;left:50%;top:50%;width:max-content;max-width:calc(100% - 16px);background:var(--box);color:var(--boxink);padding:8px 10px;font-size:clamp(.6rem,.95vw,.85rem);letter-spacing:.06em;line-height:1.3;text-transform:uppercase;font-weight:400;font-family:inherit;opacity:0;transform:translate(-50%,-50%);transition:opacity .2s;text-align:center}
-.t:hover .cap,.t:focus-visible .cap{opacity:1}
+.t .cap{display:none!important}   /* les noms de projets ne s’affichent plus au survol */
 @media (hover:none){.t .cap{opacity:1}}
 @media (max-width:1000px){:root{--cols:6}}
 @media (max-width:640px){:root{--cols:4;--g:4px}}
