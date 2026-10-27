@@ -195,6 +195,27 @@ a:not(.btn):hover,a:not(.btn):focus-visible,.tag:hover,.tag:focus-visible{font-v
 @keyframes spGrow{0%{opacity:1;transform:scale(1);font-variation-settings:"wght" 0}100%{opacity:1;transform:scale(1);font-variation-settings:"wght" 8}}
 html.splashing,html.splashing body{overflow:hidden}
 html.splashing #name{color:transparent!important}
+
+/* ===== Barre de navigation en haut ===== */
+.menu{--pad:16px;top:0;left:0;right:0;max-width:none;display:flex;flex-wrap:wrap;align-items:flex-start;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + var(--pad)) 24px 12px 24px}
+.menu ul{flex:0 0 100%;flex-direction:row;flex-wrap:wrap;align-items:flex-start;gap:2px;margin:2px 0 0 0}
+.menu ul li{transform-origin:0 50%}
+.menu ul li.gap{margin-top:0;margin-left:9px}
+
+#list li:hover .lbl,#list .lbl:focus-visible,#list .lbl.on{transform:none}
+@keyframes mIn{from{opacity:0;transform:translateX(-12px) scaleX(.5)}to{opacity:1;transform:none}}
+@keyframes mOut{from{opacity:1;transform:none}to{opacity:0;transform:translateX(-12px) scaleX(.5)}}
+.toggle.lang{top:calc(env(safe-area-inset-top,0px) + var(--pad))!important;right:24px!important}
+body:not(.proj):not(.aboutpg) .feed{margin-top:var(--navh,70px)}
+@media (min-width:900px){.textpage{padding:calc(var(--navh,70px) + 40px) 60px 80px 420px}.contact-fixed{top:calc(var(--navh,70px) + 40px)}}
+@media (max-width:640px){
+  .menu{--pad:14px;padding:calc(env(safe-area-inset-top,0px) + var(--pad)) 18px 8px 18px}
+  .menu ul{flex-wrap:nowrap;overflow-x:auto;margin:0 -18px 0 -18px;padding:4px 18px 4px 20px;scrollbar-width:none}
+  .menu ul::-webkit-scrollbar{display:none}
+  .menu ul li{flex:none}
+  .menu ul li.gap{margin-left:8px}
+  .toggle.lang{top:calc(env(safe-area-inset-top,0px) + var(--pad))!important;right:18px!important}
+}
 </style>
 </head>
 <body>
@@ -539,6 +560,9 @@ list.addEventListener("click", e=>{
 });
 document.getElementById("name").onclick = ()=>filter("Tous");
 
+(function(){ const m = document.querySelector(".menu"), r = document.documentElement;
+  const sync = () => r.style.setProperty("--navh", m.offsetHeight + "px");
+  sync(); addEventListener("resize", sync); if(window.ResizeObserver) new ResizeObserver(sync).observe(m); if(document.fonts && document.fonts.ready) document.fonts.ready.then(sync); })();
 const toggle = document.getElementById("toggle");
 toggle.onclick = ()=>{ setMenu(toggle.getAttribute("aria-expanded")!=="true"); };
 /* le menu reste déroulé à l’ouverture, y compris sur téléphone */
