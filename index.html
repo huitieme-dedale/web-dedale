@@ -7,7 +7,7 @@
 <meta name="description" content="Portfolio de Huitième Dédale, graphiste : identités, affiches, web, éditions et expérimentations.">
 <style>
 @font-face{font-family:"Resum";src:url("media/Resum.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
-:root{--g:6px;--bg:#f2f2ee;--ink:#111;--box:#111;--boxink:#f2f2ee;--light:#e7e7e1;--cols:8}
+:root{--g:6px;--bg:#f2f2ee;--ink:#111;--box:#fff;--boxink:#111;--light:#e7e7e1;--cols:8}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161616;--ink:#f2f2ee;--light:#2a2a28}}
 :root[data-theme="dark"]{--bg:#161616;--ink:#f2f2ee;--light:#2a2a28}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -19,14 +19,14 @@ body{background:var(--bg);color:var(--ink);font-family:"Resum",system-ui,-apple-
 .cursor{display:none}
 @media (hover:hover) and (pointer:fine){
   *{cursor:none!important}
-  .cursor{display:block;position:fixed;left:0;top:0;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#000;box-shadow:0 0 0 2px #fff;pointer-events:none;z-index:1000;opacity:0;}
+  .cursor{display:block;position:fixed;left:0;top:0;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px #000;pointer-events:none;z-index:1000;opacity:0;}
   .cursor.show{opacity:1}
   .cursor{transition:scale .18s cubic-bezier(.2,.7,.2,1)}
   .cursor.big{scale:1.8}
 }
 
 /* Feed pleine largeur, sans gouttières */
-.feed{container-type:inline-size;display:grid;grid-template-columns:repeat(var(--cols),1fr);grid-auto-rows:calc((100cqw - (var(--cols) - 1) * var(--g)) / var(--cols));grid-auto-flow:dense;gap:var(--g);background:#000}
+.feed{container-type:inline-size;display:grid;grid-template-columns:repeat(var(--cols),1fr);grid-auto-rows:calc((100cqw - (var(--cols) - 1) * var(--g)) / var(--cols));grid-auto-flow:dense;gap:var(--g);background:#fff}
 .t{grid-column:var(--col,auto) / span var(--w);grid-row:span var(--h);position:relative;overflow:hidden;border:0;padding:0;cursor:pointer;display:block;background:var(--bg)}
 .t[hidden]{display:none}
 .t .v{position:absolute;inset:0;background-size:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
@@ -45,7 +45,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Resum",system-ui,-apple-
 /* Téléphone : les pages des défilements tiennent dans la largeur de l’écran (plus rognées) */
 @media (max-width:700px){.ed .ed-strip img,.ed.land .ed-strip img{width:calc(100vw - 36px)!important;height:auto!important;max-width:none}}
 /* Image agrandie : toucher pour ouvrir / refermer, pincer pour zoomer */
-.lb{position:fixed;inset:0;z-index:600;background:rgba(10,10,10,.96);display:flex;align-items:center;justify-content:center;touch-action:none;opacity:0;transition:opacity .25s ease;overscroll-behavior:contain}
+.lb{position:fixed;inset:0;z-index:600;background:rgba(255,255,255,.96);display:flex;align-items:center;justify-content:center;touch-action:none;opacity:0;transition:opacity .25s ease;overscroll-behavior:contain}
 .lb[hidden]{display:none}
 .lb.on{opacity:1}
 .lb img{max-width:100vw;max-height:100vh;max-height:100dvh;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;transform-origin:center;will-change:transform;pointer-events:none}
@@ -78,14 +78,14 @@ body.lbopen{overflow:hidden}
 .hero{position:relative;width:100%;aspect-ratio:16/9;background-size:cover;overflow:hidden}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .g{display:block;width:100%}
-.hero.fit{aspect-ratio:auto;display:block;background:#000}
+.hero.fit{aspect-ratio:auto;display:block;background:#fff}
 :root{--pw:70%}
 .hero.fit img{position:static;display:block;width:var(--pw);height:auto;margin:0 auto}
 .mock{display:block;width:var(--pw);height:auto;margin:28px auto 0}
 .frames{display:grid;grid-template-columns:repeat(4,1fr);gap:0;width:var(--pw);margin:28px auto 0}
 .frames img{display:block;width:100%;height:auto}
-body.aboutpg{--bg:#0d0d0d;--ink:#fff}
-body.aboutpg .lbl,body.aboutpg .toggle{box-shadow:0 0 0 2px #f2f2ee}
+body.aboutpg{--bg:#fff;--ink:#0d0d0d}
+body.aboutpg .lbl,body.aboutpg .toggle{box-shadow:0 0 0 2px #111}
 .about-txt .divers{margin-top:clamp(24px,3vw,44px)}
 .about-txt a{color:inherit;text-underline-offset:4px}
 .about-txt{font-size:clamp(1.05rem,1.6vw,1.4rem);gap:clamp(34px,4.5vw,60px)}
@@ -129,16 +129,16 @@ body.aboutpg .lbl,body.aboutpg .toggle{box-shadow:0 0 0 2px #f2f2ee}
 .ed.ctr .ed-strip img{scroll-snap-align:center}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.6vw,24px);width:var(--pw);margin:0 auto}
 .hero.fit .pair img{width:100%;margin:0}
-body.proj.lightproj{--bg:#fff;--ink:#111}
+body.proj.lightproj{--bg:#0d0d0d;--ink:#f2f2ee}
 body.proj.lightproj .lbl,body.proj.lightproj .toggle,body.proj.lightproj .btn{box-shadow:none}
 @media (max-width:700px){:root{--pw:92%}}
 
 /* Page projet (fond sombre) */
-body.proj{--bg:#0d0d0d;--ink:#f2f2ee}
-body.proj .lbl,body.proj .toggle,body.proj .btn{box-shadow:0 0 0 2px #f2f2ee}
+body.proj{--bg:#fff;--ink:#111}
+body.proj .lbl,body.proj .toggle,body.proj .btn{box-shadow:0 0 0 2px #111}
 /* Page principale : fond noir */
-body:not(.proj):not(.aboutpg){--bg:#000;--ink:#f2f2ee}
-body:not(.proj):not(.aboutpg) .lbl,body:not(.proj):not(.aboutpg) .toggle{box-shadow:0 0 0 2px #f2f2ee}
+body:not(.proj):not(.aboutpg){--bg:#fff;--ink:#111}
+body:not(.proj):not(.aboutpg) .lbl,body:not(.proj):not(.aboutpg) .toggle{box-shadow:0 0 0 2px #111}
 .phead{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:150px 36px 70px}
 .phead h1{font-weight:400;font-size:clamp(2rem,4.5vw,4.2rem);text-transform:uppercase;letter-spacing:.02em;line-height:1}
 .tags{margin-top:22px}
@@ -163,7 +163,7 @@ body.proj #prev,body.proj #next{display:grid}
 .btn{align-self:flex-start;margin-top:auto;display:inline-block;background:var(--box);color:var(--boxink)!important;padding:10px 16px;text-decoration:none!important;text-transform:uppercase;letter-spacing:.09em}
 .textpage{padding:110px 24px 60px}
 @media (min-width:900px){.textpage{padding:60px 60px 80px 420px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}.menu ul li{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.feed.intro .t{animation:none!important}*{transition:none!important}.menu ul li{animation:none!important}}
 /* Titres, menu, boutons et étiquettes de cases : Resum Bold A (axe wght = 6). En dernier pour passer après les « font:inherit » */
 button{font-family:inherit}
 h1,h2,.lbl,.t .cap,.btn{font-variation-settings:"wght" 6}
@@ -185,8 +185,8 @@ a:not(.btn):hover,a:not(.btn):focus-visible,.tag:hover,.tag:focus-visible{font-v
 @media (max-width:640px){.toggle.lang{padding:0 10px}}
 
 /* Écran d’accueil : « Huitième Dédale » éclot lettre par lettre (graisses de Resum) puis vient se ranger dans le menu */
-.splash{position:fixed;inset:0;z-index:900;background:#000;color:#f2f2ee;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}
-.splash.out{background:rgba(0,0,0,0);transition:background .9s ease}
+.splash{position:fixed;inset:0;z-index:900;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}
+.splash.out{background:rgba(255,255,255,0);transition:background .9s ease}
 .sp-word{display:flex;white-space:pre;font-family:"Resum",system-ui,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.09em;line-height:1.15;transform-origin:center}
 .sp-l{display:inline-block;text-align:center;padding:.4em 0;margin:-.4em 0;font-variation-settings:"wght" 6;opacity:0}
 .sp-l.go{animation:spIn .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i) * 35ms)}
@@ -197,9 +197,12 @@ html.splashing,html.splashing body{overflow:hidden}
 html.splashing #name{color:transparent!important}
 
 /* ===== Barre de navigation en haut ===== */
+#toggle{display:none}
 .menu{--pad:16px;top:0;left:0;right:0;max-width:none;display:flex;flex-wrap:wrap;align-items:flex-start;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + var(--pad)) 24px 12px 24px}
 .menu ul{flex:0 0 100%;flex-direction:row;flex-wrap:wrap;align-items:flex-start;gap:2px;margin:2px 0 0 0}
 .menu ul li{transform-origin:0 50%}
+.feed.intro .t{animation:tIn .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--k,0ms)}
+@keyframes tIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:none}}
 .menu ul li.gap{margin-top:0;margin-left:9px}
 
 #list li:hover .lbl,#list .lbl:focus-visible,#list .lbl.on{transform:none}
@@ -210,9 +213,7 @@ body:not(.proj):not(.aboutpg) .feed{margin-top:var(--navh,70px)}
 @media (min-width:900px){.textpage{padding:calc(var(--navh,70px) + 40px) 60px 80px 420px}.contact-fixed{top:calc(var(--navh,70px) + 40px)}}
 @media (max-width:640px){
   .menu{--pad:14px;padding:calc(env(safe-area-inset-top,0px) + var(--pad)) 18px 8px 18px}
-  .menu ul{flex-wrap:nowrap;overflow-x:auto;margin:0 -18px 0 -18px;padding:4px 18px 4px 20px;scrollbar-width:none}
-  .menu ul::-webkit-scrollbar{display:none}
-  .menu ul li{flex:none}
+  .menu ul{flex-wrap:wrap;margin:2px 0 0 0;padding:0}
   .menu ul li.gap{margin-left:8px}
   .toggle.lang{top:calc(env(safe-area-inset-top,0px) + var(--pad))!important;right:18px!important}
 }
@@ -344,7 +345,9 @@ function playUnroll(){
   list.classList.remove("roll","unroll"); void list.offsetWidth; list.classList.add("unroll");
   }
 list.addEventListener("animationend", e=>{ if(e.animationName==="mIn" && e.target===list.lastElementChild) list.classList.remove("unroll"); });
-function setMenu(o){
+function setMenu(o){ list.hidden = false; return;   /* le menu reste toujours ouvert */
+}
+function setMenuOld(o){
   o = !!o;
   const was = toggle.getAttribute("aria-expanded")==="true";
   if(o===was){ if(!o){ if(!list.classList.contains("roll")) list.hidden = true; } else list.hidden = false; return; }   /* état inchangé : aucune animation (ex. changement de langue) */
@@ -523,6 +526,8 @@ const ZSEL = ".blocks img,.ed-strip img,.ed-row img,.mock,.frames img,.g,.hero.f
 page.addEventListener("click", e=>{ const b = e.target.closest("[data-go],[data-f]"); if(!b) return; if(b.dataset.go) go(b.dataset.go); else cat(b.dataset.f); });
 
 const vis = p => p.image ? `<img src="${p.image}" alt="Visuel du projet ${p.title}" loading="lazy">` : "";
+/* couleurs inversées : fonds noirs ↔ blancs derrière les visuels */
+projects.forEach(p=>{ const b=(p.bg||"").toLowerCase(); if(b==="#0d0d0d"||b==="#000"||b==="#000000") p.bg="#ffffff"; else if(b==="#fff"||b==="#ffffff") p.bg="#0d0d0d"; });
 feed.innerHTML = projects.map((p,i)=>
   `<button class="t" data-i="${i}" data-cat="${(p.cats||[p.cat]).join("|")}" style="--w:${p.w};--h:${p.h};--mo:${p.mo!==undefined?p.mo:i*10};--z:${p.zoom||1}${p.col?`;--col:${p.col}`:""}" aria-label="Ouvrir le projet ${p.title}">
      <span class="v" style="background:${p.bg}"></span>${vis(p)}
@@ -627,6 +632,12 @@ playUnroll();   /* à l’ouverture du site (après l’écran d’accueil) le m
 render();
 
 /* ===== Écran d’accueil : la typo apparaît fine, grossit (graisses de Resum), puis va se ranger dans le menu ===== */
+function introFeed(){
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches || feed.hidden) return;
+  const ts = [...feed.querySelectorAll(".t")].filter(t=>!t.hidden);
+  ts.forEach(t=>{ const r = t.getBoundingClientRect(); const k = Math.max(0, (r.left/innerWidth)*350 + (Math.max(0,r.top)/innerHeight)*350); t.style.setProperty("--k", Math.round(k)+"ms"); });
+  feed.classList.add("intro"); setTimeout(()=>feed.classList.remove("intro"), 1700);
+}
 (function(){
   const sp = document.getElementById("splash"), word = document.getElementById("spWord"), name = document.getElementById("name");
   if(!sp) return;
@@ -636,6 +647,7 @@ render();
   let finished = false;
   const finish = (soft) => { if(finished) return; finished = true; document.documentElement.classList.remove("splashing");
     /* fondu enchaîné : le vrai titre du menu apparaît pendant que la copie animée s’efface, sans saut visible */
+    introFeed();
     if(soft===true){ word.style.transition = "opacity .16s linear"; word.style.opacity = 0; setTimeout(()=>sp.remove(), 200); } else sp.remove(); };
   sp.addEventListener("click", ()=>finish());
   const fontsReady = Promise.race([ (document.fonts && document.fonts.load) ? document.fonts.load('400 40px Resum').catch(()=>{}) : Promise.resolve(), new Promise(r=>setTimeout(r,1500)) ]);
