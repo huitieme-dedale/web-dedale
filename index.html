@@ -199,8 +199,10 @@ html.splashing #name{color:transparent!important}
 /* ===== Barre de navigation en haut ===== */
 #toggle{display:none}
 .row{gap:0;align-items:stretch}
-.menu{background:#111!important;transition:background-color .9s ease .1s}
-html.splashing .menu{background:transparent!important;transition:none}
+.menu{background:transparent!important}
+.menu::before{content:"";position:absolute;inset:0;background:#111;z-index:-1;transform-origin:50% 0;transition:transform .7s cubic-bezier(.65,0,.25,1)}
+html.splashing .menu::before{transform:scaleY(0);transition:none}
+.menu ul.unroll li{animation-delay:calc(450ms + var(--i)*55ms)}
 @media (hover:none){.menu .toggle:hover,.menu .lbl:not(.on):hover{background:var(--box);color:var(--boxink)}}
 .phead{padding-top:calc(var(--navh,70px) + 40px)!important}
 .menu{--pad:16px;top:0;left:0;right:0;max-width:none;display:flex;flex-wrap:wrap;align-items:flex-start;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + var(--pad)) 24px 12px 24px}
@@ -651,7 +653,7 @@ render();
 function introFeed(){
   if(matchMedia("(prefers-reduced-motion:reduce)").matches || feed.hidden) return;
   const ts = [...feed.querySelectorAll(".t")].filter(t=>!t.hidden);
-  ts.forEach(t=>{ const r = t.getBoundingClientRect(); const k = Math.max(0, (r.left/innerWidth)*350 + (Math.max(0,r.top)/innerHeight)*350); t.style.setProperty("--k", Math.round(k)+"ms"); });
+  ts.forEach(t=>{ const r = t.getBoundingClientRect(); const k = Math.max(0, (r.left/innerWidth)*350 + (Math.max(0,r.top)/innerHeight)*350); t.style.setProperty("--k", "0ms"); });
   feed.classList.add("intro"); setTimeout(()=>feed.classList.remove("intro"), 1700);
 }
 (function(){
