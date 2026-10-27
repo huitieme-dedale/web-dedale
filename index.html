@@ -653,8 +653,8 @@ render();
 function introFeed(){
   if(matchMedia("(prefers-reduced-motion:reduce)").matches || feed.hidden) return;
   const ts = [...feed.querySelectorAll(".t")].filter(t=>!t.hidden);
-  ts.forEach(t=>{ const r = t.getBoundingClientRect(); const k = Math.max(0, (r.left/innerWidth)*350 + (Math.max(0,r.top)/innerHeight)*350); t.style.setProperty("--k", "0ms"); });
-  feed.classList.add("intro"); setTimeout(()=>feed.classList.remove("intro"), 1700);
+  ts.forEach(t=>{ const r = t.getBoundingClientRect(); const k = Math.max(0, (r.left/innerWidth)*350 + (Math.max(0,r.top)/innerHeight)*350); t.style.setProperty("--k", "1400ms"); });
+  feed.classList.add("intro"); setTimeout(()=>feed.classList.remove("intro"), 2500);
 }
 (function(){
   const sp = document.getElementById("splash"), word = document.getElementById("spWord"), name = document.getElementById("name");
