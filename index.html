@@ -215,7 +215,11 @@ body:not(.proj):not(.aboutpg) .feed{margin-top:var(--navh,70px)}
 @media (max-width:640px){
   .menu{--pad:14px;padding:calc(env(safe-area-inset-top,0px) + var(--pad)) 18px 8px 18px}
   .menu ul{flex-wrap:wrap;margin:2px 0 0 0;padding:0}
-  .menu ul li.gap{margin-left:8px}
+  .menu ul li.gap{margin-left:0}
+  .menu ul li:has(+ li.gap){margin-right:8px}
+  #name,.toggle.lang{padding-top:8px;padding-bottom:8px;height:auto;line-height:1.2;letter-spacing:.06em;box-sizing:border-box}
+  .toggle.lang{padding-left:12px;padding-right:12px}
+  .row{align-items:flex-start}
   .toggle.lang{top:calc(env(safe-area-inset-top,0px) + var(--pad))!important;right:18px!important}
 }
 </style>
