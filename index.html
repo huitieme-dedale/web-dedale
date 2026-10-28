@@ -206,9 +206,9 @@ html.splashing .menu::before{transform:scaleY(0);transition:none}
 .menu ul.unroll li{animation-delay:calc(450ms + var(--i)*55ms)}
 @media (hover:none){.menu .toggle:hover,.menu .lbl:not(.on):hover{background:var(--box);color:var(--boxink)}}
 .phead{padding-top:calc(var(--navh,70px) + 40px)!important}
-.menu{--pad:16px;top:0;left:0;right:0;max-width:none;display:flex;flex-wrap:wrap;align-items:flex-start;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + var(--pad)) 24px 12px 24px}
-.menu ul{flex:0 0 100%;flex-direction:row;flex-wrap:wrap;align-items:flex-start;gap:2px;margin:2px 0 0 0}
-.menu ul li{transform-origin:0 50%}
+.menu{--pad:16px;top:0;left:0;right:0;max-width:none;display:flex;flex-wrap:wrap;align-items:flex-start;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + var(--pad)) 24px 10px 24px}
+.menu ul{flex:0 0 100%;flex-direction:row;flex-wrap:wrap;align-items:flex-start;gap:0 2px;margin:2px 0 0 0}
+.menu ul li{transform-origin:0 50%;margin-bottom:2px}
 .feed.intro .t{animation:tIn .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--k,0ms)}
 @keyframes tIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:none}}
 .menu ul li.gap{margin-top:0;margin-left:1px}
